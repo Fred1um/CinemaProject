@@ -17,6 +17,9 @@ class Cinema:
     def get_name(self):
         return self.__film_name
 
+    def change_time(self, new_time):
+        self.__scheduled_time = new_time
+
 
 class Hall:
     def __init__(self, hall_name, eco_places, comf_places, vip_places):
@@ -38,11 +41,6 @@ class Hall:
 
     def add_cinema(self, cinema):
         self.cinema_obj_list.append(cinema)
-
-    def find_index(self, film_name):
-        for elem in range(len(self.cinema_obj_list)):
-            if self.cinema_obj_list[elem].get_name() == film_name:
-                return elem
 
 
 class Customer:
@@ -68,7 +66,7 @@ class Customer:
 
 customers_obj_list = [Customer('classic_user2000', 'ClassicUser2000', 'Classic', 'User',
                                '20', 'classicuser2000@gmail.com')]
-halls_obj_list = [Hall('Classic Hall', 10, 7, 5)]
+halls_obj_list = [Hall('Classic Hall', 10, 7, 5), Hall('Special Hall', 20, 15, 10)]
 
 
 # Customer funcs
@@ -91,23 +89,39 @@ def delete_customer(index):
 # Hall funcs
 def add_hall(hall_name, eco_places, comf_places, vip_places):
     halls_obj_list.append(Hall(hall_name, eco_places, comf_places, vip_places))
+
+
+def find_hall_index(hall_name):
+    for i, v in enumerate(halls_obj_list):
+        if v.get_name() == hall_name:
+            return i
+    return -1
 # ----------
 
 
 # Cinema funcs
-# def find_cinema_index(film_name):
-#     for i in halls_obj_list:
+# i - index of hall, v - hall. e - index of cinema, l - cinema
+def find_cinema_and_hall_index(film_name):
+    for i, v in enumerate(halls_obj_list):
+        for e, l in enumerate(v.cinema_obj_list):
+            if l.get_name() == film_name:
+                return e, i
+    return -1
 
 
 def add_cinema(film_name, scheduled_time, hall_name):
-    for elem in halls_obj_list:
-        if elem.get_name() == hall_name:
-            elem.add_cinema(Cinema(film_name, scheduled_time))
+    if find_hall_index(hall_name) != -1:
+        halls_obj_list[find_hall_index(hall_name)].add_cinema(Cinema(film_name, scheduled_time))
+        return 0
+    return -1
 
 
-# def edit_scheduled_time(film_name, new_time):
-#     halls_obj_list[]
+def edit_scheduled_time(film_name, new_time):
+    cinema_index, hall_index = find_cinema_and_hall_index(film_name)[0], find_cinema_and_hall_index(film_name)[1]
+    if find_cinema_and_hall_index(film_name)[0] != -1:
+        halls_obj_list[hall_index].cinema_obj_list[cinema_index].change_time(new_time)
+        return 'Success'
+    else:
+        return 'Error'
 
 # ---------
-print(customers_obj_list[0])
-print(halls_obj_list[0])
