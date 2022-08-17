@@ -11,7 +11,7 @@ class Cinema:
 
     def __repr__(self):
         res_str = f'ID: {self.__id}\nFilm name: {self.__film_name}\nScheduled time: {self.__scheduled_time}\n' \
-                  f'Cinema hall: {self.__cinema_hall}'
+                  f'Cinema hall: {self.__cinema_hall}\n'
         return res_str
 
     def get_name(self):
