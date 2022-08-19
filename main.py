@@ -66,6 +66,3 @@ def edit_scheduled_time(film_name, new_time):
     else:
         return -1
 # ---------
-
-
-

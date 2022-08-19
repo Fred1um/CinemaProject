@@ -61,4 +61,3 @@ class Customer:
 
     def get_login(self):
         return self.__login
-
