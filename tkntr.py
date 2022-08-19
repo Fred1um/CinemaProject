@@ -195,3 +195,4 @@ cin_btn.pack()
 main_frame.pack()
 prev_frame = main_frame
 win.mainloop()
+
