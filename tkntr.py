@@ -72,126 +72,129 @@ customer_register = Frame(width=500, height=500)
 hall_register = Frame(width=500, height=500)
 cinema_register = Frame(width=500, height=500)
 
+spec_relh = 0.05
+spec_relw = 0.3
+lbl_relh = 0.04
 
 # CUSTOMER REGISTER FRAME - START
 lbl_login = Label(customer_register, text='Login')
 entry_login = Entry(customer_register)
 
-lbl_login.place(relx=0.4, rely=0.02, relheight=0.03, relwidth=0.2)
-entry_login.place(relx=0.35, rely=0.05, relheight=0.04, relwidth=0.3)
+lbl_login.place(relx=0.35, rely=0, relheight=lbl_relh, relwidth=spec_relw)
+entry_login.place(relx=0.35, rely=0.04, relheight=spec_relh, relwidth=spec_relw)
 
 lbl_password = Label(customer_register, text='Password')
 entry_password = Entry(customer_register, show='*')
 
-lbl_password.place(relx=0.4, rely=0.09, relheight=0.03, relwidth=0.2)
-entry_password.place(relx=0.35, rely=0.12, relheight=0.04, relwidth=0.3)
+lbl_password.place(relx=0.35, rely=0.09, relheight=lbl_relh, relwidth=spec_relw)
+entry_password.place(relx=0.35, rely=0.13, relheight=spec_relh, relwidth=spec_relw)
 
-# lbl_name = Label(customer_register, text='Name')
-# entry_name = Entry(customer_register, width=10)
-#
-# lbl_name.place(x=250, y=25)
-# entry_name.place(x=250, y=30)
-#
-# lbl_surname = Label(customer_register, text='Surname')
-# entry_surname = Entry(customer_register, width=10)
-#
-# lbl_surname.place(x=250, y=35)
-# entry_surname.place(x=250, y=40)
-#
-# lbl_age = Label(customer_register, text='Age')
-# entry_age = Entry(customer_register, width=10)
-#
-# lbl_age.place(x=250, y=45)
-# entry_age.place(x=250, y=50)
-#
-# lbl_email = Label(customer_register, text='Email')
-# entry_email = Entry(customer_register, width=10)
-#
-# lbl_email.place(x=250, y=55)
-# entry_email.place(x=250, y=60)
-#
-# save_cust_btn = Button(customer_register, text='save', command=lambda: btn_save_customer_info())
-# save_cust_btn.place(x=250, y=70)
-#
-# customersListbox = Listbox(customer_register, width=500, height=5)
-# customersListbox.place(x=0, y=80)
+lbl_name = Label(customer_register, text='Name')
+entry_name = Entry(customer_register)
+
+lbl_name.place(relx=0.35, rely=0.18, relheight=lbl_relh, relwidth=spec_relw)
+entry_name.place(relx=0.35, rely=0.22, relheight=spec_relh, relwidth=spec_relw)
+
+lbl_surname = Label(customer_register, text='Surname')
+entry_surname = Entry(customer_register)
+
+lbl_surname.place(relx=0.35, rely=0.27, relheight=lbl_relh, relwidth=spec_relw)
+entry_surname.place(relx=0.35, rely=0.31, relheight=spec_relh, relwidth=spec_relw)
+
+lbl_age = Label(customer_register, text='Age')
+entry_age = Entry(customer_register)
+
+lbl_age.place(relx=0.35, rely=0.36, relheight=lbl_relh, relwidth=spec_relw)
+entry_age.place(relx=0.35, rely=0.4, relheight=spec_relh, relwidth=spec_relw)
+
+lbl_email = Label(customer_register, text='Email')
+entry_email = Entry(customer_register)
+
+lbl_email.place(relx=0.35, rely=0.45, relheight=lbl_relh, relwidth=spec_relw)
+entry_email.place(relx=0.35, rely=0.49, relheight=spec_relh, relwidth=spec_relw)
+
+save_cust_btn = Button(customer_register, text='save', command=lambda: btn_save_customer_info())
+save_cust_btn.place(relx=0.35, rely=0.58, relwidth=spec_relw)
+
+customersListbox = Listbox(customer_register)
+customersListbox.place(relx=0, rely=0.7, relheight=0.1, relwidth=1)
 
 main_btn = Button(customer_register, text='back to main page', command=lambda: change_to_main())
-main_btn.place(anchor=NW)
+main_btn.place(relx=0, rely=0.9)
 # CUSTOMER REGISTER FRAME - END
 
 # HALL REGISTER FRAME - START
 lbl_hall_name = Label(hall_register, text='Hall name')
 entry_hall_name = Entry(hall_register)
 
-lbl_hall_name.place()
-entry_hall_name.place()
+lbl_hall_name.place(relx=0.35, rely=0.1, relheight=lbl_relh, relwidth=spec_relw)
+entry_hall_name.place(relx=0.35, rely=0.14, relheight=spec_relh, relwidth=spec_relw)
 
 lbl_eco = Label(hall_register, text='Economy places')
 entry_eco = Entry(hall_register)
 
-lbl_eco.place()
-entry_eco.place()
+lbl_eco.place(relx=0.35, rely=0.19, relheight=lbl_relh, relwidth=spec_relw)
+entry_eco.place(relx=0.35, rely=0.23, relheight=spec_relh, relwidth=spec_relw)
 
 lbl_comf = Label(hall_register, text='Comfort places')
 entry_comf = Entry(hall_register)
 
-lbl_comf.place()
-entry_comf.place()
+lbl_comf.place(relx=0.35, rely=0.28, relheight=lbl_relh, relwidth=spec_relw)
+entry_comf.place(relx=0.35, rely=0.32, relheight=spec_relh, relwidth=spec_relw)
 
 lbl_vip = Label(hall_register, text='VIP places')
 entry_vip = Entry(hall_register)
 
-lbl_vip.place()
-entry_vip.place()
+lbl_vip.place(relx=0.35, rely=0.37, relheight=lbl_relh, relwidth=spec_relw)
+entry_vip.place(relx=0.35, rely=0.41, relheight=spec_relh, relwidth=spec_relw)
 
 save_hall_btn = Button(hall_register, text='save', command=lambda: btn_save_hall_info())
-save_hall_btn.place()
+save_hall_btn.place(relx=0.35, rely=0.5, relwidth=spec_relw)
 
-hallsListbox = Listbox(hall_register, width=100, height=5)
-hallsListbox.place()
+hallsListbox = Listbox(hall_register)
+hallsListbox.place(relx=0, rely=0.6, relheight=0.1, relwidth=1)
 
 main_btn = Button(hall_register, text='back to main page', command=lambda: change_to_main())
-main_btn.place(anchor=NW)
+main_btn.place(relx=0, rely=0.9)
 # HALL REGISTER FRAME - END
 
 # CINEMA REGISTER FRAME - START
 lbl_film_name = Label(cinema_register, text='Film name')
 entry_film_name = Entry(cinema_register)
 
-lbl_film_name.place()
-entry_film_name.place()
+lbl_film_name.place(relx=0.35, rely=0.2, relheight=lbl_relh, relwidth=spec_relw)
+entry_film_name.place(relx=0.35, rely=0.24, relheight=spec_relh, relwidth=spec_relw)
 
 lbl_sch_time = Label(cinema_register, text='Scheduled time')
 entry_sch_time = Entry(cinema_register)
 
-lbl_sch_time.place()
-entry_sch_time.place()
+lbl_sch_time.place(relx=0.35, rely=0.29, relheight=lbl_relh, relwidth=spec_relw)
+entry_sch_time.place(relx=0.35, rely=0.33, relheight=spec_relh, relwidth=spec_relw)
 
 lbl_cinema_hall = Label(cinema_register, text='Cinema hall')
 entry_cinema_hall = Entry(cinema_register)
 
-lbl_cinema_hall.place()
-entry_cinema_hall.place()
+lbl_cinema_hall.place(relx=0.35, rely=0.38, relheight=lbl_relh, relwidth=spec_relw)
+entry_cinema_hall.place(relx=0.35, rely=0.42, relheight=spec_relh, relwidth=spec_relw)
 
 save_cinema_btn = Button(cinema_register, text='save', command=lambda: btn_save_cinema_info())
-save_cinema_btn.place()
+save_cinema_btn.place(relx=0.35, rely=0.55, relwidth=spec_relw)
 
-cinemasListbox = Listbox(cinema_register, width=100, height=5)
-cinemasListbox.place()
+cinemasListbox = Listbox(cinema_register)
+cinemasListbox.place(relx=0, rely=0.7, relheight=0.1, relwidth=1)
 
 main_btn = Button(cinema_register, text='back to main page', command=lambda: change_to_main())
-main_btn.place()
+main_btn.place(relx=0, rely=0.9)
 # CINEMA REGISTER FRAME - END
 
 customer_btn = Button(main_frame, text='Customer register', command=lambda: change_to_customer_register())
-customer_btn.place(x=250, y=150, bordermode=INSIDE, anchor=CENTER)
+customer_btn.place(relx=0.5, rely=0.3, anchor=CENTER)
 
 hall_btn = Button(main_frame, text='Hall register', command=lambda: change_to_hall_register())
-hall_btn.place(x=250, y=200, bordermode=INSIDE, anchor=CENTER)
+hall_btn.place(relx=0.5, rely=0.4, anchor=CENTER)
 
 cin_btn = Button(main_frame, text='Cinema register', command=lambda: change_to_cinema_register())
-cin_btn.place(x=250, y=250, bordermode=INSIDE, anchor=CENTER)
+cin_btn.place(relx=0.5, rely=0.5, anchor=CENTER)
 
 
 prev_frame = main_frame
