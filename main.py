@@ -1,8 +1,7 @@
 # import os
 from classes import *
 
-customers_obj_list = [Customer('classic_user2000', 'ClassicUser2000', 'Classic', 'User',
-                               '20', 'classicuser2000@gmail.com')]
+customers_obj_list = []
 halls_obj_list = [Hall('Classic Hall', 10, 7, 5), Hall('Special Hall', 20, 15, 10)]
 
 

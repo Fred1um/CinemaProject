@@ -2,6 +2,12 @@ from tkinter import *
 from main import *
 
 
+def btn_delete_from_customers_listbox():
+    index = customersListbox.curselection()[0]
+    customersListbox.delete(index)
+    customers_obj_list.pop(index)
+
+
 def btn_save_customer_info():
     temp_cust = add_customer(entry_login.get(), entry_password.get(), entry_name.get(),
                              entry_surname.get(), entry_age.get(), entry_email.get())
@@ -118,6 +124,9 @@ save_cust_btn.place(relx=0.35, rely=0.58, relwidth=spec_relw)
 
 customersListbox = Listbox(customer_register)
 customersListbox.place(relx=0, rely=0.7, relheight=0.1, relwidth=1)
+
+delete_from_custList = Button(customer_register, command=lambda: btn_delete_from_customers_listbox(), text='Delete')
+delete_from_custList.place(relx=0.9, rely=0.9)
 
 main_btn = Button(customer_register, text='back to main page', command=lambda: change_to_main())
 main_btn.place(relx=0, rely=0.9)
