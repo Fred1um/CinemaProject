@@ -2,6 +2,23 @@ from tkinter import *
 from main import *
 
 
+def btn_sign_in():
+    for elem in workers_obj_list:
+        if elem.get_login() == entry_user_login.get():
+            if elem.get_pass() == entry_user_password.get():
+                if elem.get_title() == 'admin':
+                    prev_frame.place_forget()
+                    admin_frame.place(x=0, y=0)
+                elif elem.get_title() == 'cashier':
+                    prev_frame.place_forget()
+                    cashier_frame.place(x=0, y=0)
+            else:
+                lbl_signin_result.config(text='Password is incorrect')
+                break
+    else:
+        lbl_signin_result.config(text='Worker login is not existing')
+
+
 def btn_delete_from_customers_listbox():
     index = customersListbox.curselection()[0]
     customersListbox.delete(index)
@@ -40,8 +57,8 @@ def btn_save_cinema_info():
 def change_to_main():
     global prev_frame
     prev_frame.place_forget()
-    main_frame.place(x=0, y=0)
-    prev_frame = main_frame
+    admin_frame.place(x=0, y=0)
+    prev_frame = admin_frame
 
 
 def change_to_customer_register():
@@ -68,12 +85,23 @@ def change_to_cinema_register():
     prev_frame = cinema_register
 
 
+def change_to_worker_register():
+    global prev_frame
+    if prev_frame != 0:
+        prev_frame.place_forget()
+    worker_register.place(x=0, y=0)
+    prev_frame = worker_register
+
+
 win = Tk()
 win.title('Cinema Theatre')
 win.geometry('500x500')
 
-main_frame = Frame(width=500, height=500)
-main_frame.place(x=0, y=0)
+login_frame = Frame(width=500, height=500)
+login_frame.place(x=0, y=0)
+admin_frame = Frame(width=500, height=500)
+worker_register = Frame(width=500, height=500)
+cashier_frame = Frame(width=500, height=500)
 customer_register = Frame(width=500, height=500)
 hall_register = Frame(width=500, height=500)
 cinema_register = Frame(width=500, height=500)
@@ -81,6 +109,61 @@ cinema_register = Frame(width=500, height=500)
 spec_relh = 0.05
 spec_relw = 0.3
 lbl_relh = 0.04
+
+# LOGIN FRAME - START
+lbl_user_login = Label(login_frame, text='Login')
+entry_user_login = Entry(login_frame)
+
+lbl_user_login.place(relx=0.35, rely=0.37, relheight=lbl_relh, relwidth=spec_relw)
+entry_user_login.place(relx=0.35, rely=0.41, relheight=spec_relh, relwidth=spec_relw)
+
+lbl_user_password = Label(login_frame, text='Password')
+entry_user_password = Entry(login_frame, show='*')
+
+lbl_user_password.place(relx=0.35, rely=0.46, relheight=lbl_relh, relwidth=spec_relw)
+entry_user_password.place(relx=0.35, rely=0.5, relheight=spec_relh, relwidth=spec_relw)
+
+btn_signin_save = Button(login_frame, text='sign in', command=lambda: btn_sign_in())
+btn_signin_save.place(relx=0.45, rely=0.55, relwidth=0.1, relheight=0.05)
+
+lbl_signin_result = Label(login_frame, text='')
+lbl_signin_result.place(relx=0.45, rely=0.62, relheight=lbl_relh, relwidth=spec_relw)
+# LOGIN FRAME - END
+
+# WORKER REGISTER FRAME - START
+lbl_worker_name = Label(worker_register, text='Name')
+entry_worker_name = Entry(worker_register)
+
+lbl_worker_name.place(relx=0.35, rely=0, relheight=lbl_relh, relwidth=spec_relw)
+entry_worker_name.place(relx=0.35, rely=0.04, relheight=spec_relh, relwidth=spec_relw)
+
+lbl_worker_surname = Label(worker_register, text='Surname')
+entry_worker_surname = Entry(worker_register)
+
+lbl_worker_surname.place(relx=0.35, rely=0.09, relheight=lbl_relh, relwidth=spec_relw)
+entry_worker_surname.place(relx=0.35, rely=0.13, relheight=spec_relh, relwidth=spec_relw)
+
+lbl_worker_login = Label(worker_register, text='Login')
+entry_worker_login = Entry(worker_register)
+
+lbl_worker_login.place(relx=0.35, rely=0.18, relheight=lbl_relh, relwidth=spec_relw)
+entry_worker_login.place(relx=0.35, rely=0.22, relheight=spec_relh, relwidth=spec_relw)
+
+lbl_worker_pass = Label(worker_register, text='Password')
+entry_worker_pass = Entry(worker_register)
+
+lbl_worker_pass.place(relx=0.35, rely=0.27, relheight=lbl_relh, relwidth=spec_relw)
+entry_worker_pass.place(relx=0.35, rely=0.31, relheight=spec_relh, relwidth=spec_relw)
+
+lbl_worker_title = Label(worker_register, text='Title')
+entry_worker_title = Entry(worker_register)
+
+lbl_worker_title.place(relx=0.35, rely=0.36, relheight=lbl_relh, relwidth=spec_relw)
+entry_worker_title.place(relx=0.35, rely=0.4, relheight=spec_relh, relwidth=spec_relw)
+
+main_btn = Button(worker_register, text='back to main page', command=lambda: change_to_main())
+main_btn.place(relx=0, rely=0.9)
+# WORKER REGISTER FRAME - END
 
 # CUSTOMER REGISTER FRAME - START
 lbl_login = Label(customer_register, text='Login')
@@ -196,15 +279,19 @@ main_btn = Button(cinema_register, text='back to main page', command=lambda: cha
 main_btn.place(relx=0, rely=0.9)
 # CINEMA REGISTER FRAME - END
 
-customer_btn = Button(main_frame, text='Customer register', command=lambda: change_to_customer_register())
+# ADMIN FRAME - START
+customer_btn = Button(admin_frame, text='Customer register', command=lambda: change_to_customer_register())
 customer_btn.place(relx=0.5, rely=0.3, anchor=CENTER)
 
-hall_btn = Button(main_frame, text='Hall register', command=lambda: change_to_hall_register())
+hall_btn = Button(admin_frame, text='Hall register', command=lambda: change_to_hall_register())
 hall_btn.place(relx=0.5, rely=0.4, anchor=CENTER)
 
-cin_btn = Button(main_frame, text='Cinema register', command=lambda: change_to_cinema_register())
+cin_btn = Button(admin_frame, text='Cinema register', command=lambda: change_to_cinema_register())
 cin_btn.place(relx=0.5, rely=0.5, anchor=CENTER)
 
+worker_reg_btn = Button(admin_frame, text='Worker register', command=lambda: change_to_worker_register())
+worker_reg_btn.place(relx=0.5, rely=0.6, anchor=CENTER)
+# ADMIN FRAME - END
 
-prev_frame = main_frame
+prev_frame = login_frame
 win.mainloop()

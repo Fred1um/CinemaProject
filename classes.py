@@ -1,6 +1,30 @@
 from uuid import uuid4
 
 
+class Worker:
+    def __init__(self, worker_name, worker_surname, worker_login, worker_pass, title):
+        self.__id = uuid4()
+        self.__worker_name = worker_name
+        self.__worker_surname = worker_surname
+        self.__worker_login = worker_login
+        self.__worker_pass = worker_pass
+        self.__title = title
+
+    def __repr__(self):
+        res_str = f' ID: {self.__id}\n Worker name: {self.__worker_name}\n Worker surname: {self.__worker_surname}\n ' \
+                  f'Worker login: {self.__worker_login}\n Worker title: {self.__title}\n '
+        return res_str
+
+    def get_login(self):
+        return self.__worker_login
+
+    def get_pass(self):
+        return self.__worker_pass
+
+    def get_title(self):
+        return self.__title
+
+
 class Cinema:
     def __init__(self, film_name, scheduled_time):
         self.__id = uuid4()
