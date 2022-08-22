@@ -19,6 +19,18 @@ def btn_sign_in():
         lbl_signin_result.config(text='Worker login is not existing')
 
 
+def btn_save_worker_info():
+    temp_worker = Worker(entry_worker_name.get(), entry_worker_surname.get(), entry_worker_login.get(),
+                         entry_worker_pass.get(), entry_worker_title.get())
+    add_worker(temp_worker)
+    workersListbox.insert(END, temp_worker)
+    entry_worker_name.delete(0, END)
+    entry_worker_surname.delete(0, END)
+    entry_worker_login.delete(0, END)
+    entry_worker_pass.delete(0, END)
+    entry_worker_title.delete(0, END)
+
+
 def btn_delete_from_customers_listbox():
     index = customersListbox.curselection()[0]
     customersListbox.delete(index)
@@ -95,7 +107,7 @@ def change_to_worker_register():
 
 win = Tk()
 win.title('Cinema Theatre')
-win.geometry('500x500')
+win.geometry('1000x1000')
 
 login_frame = Frame(width=500, height=500)
 login_frame.place(x=0, y=0)
@@ -160,6 +172,12 @@ entry_worker_title = Entry(worker_register)
 
 lbl_worker_title.place(relx=0.35, rely=0.36, relheight=lbl_relh, relwidth=spec_relw)
 entry_worker_title.place(relx=0.35, rely=0.4, relheight=spec_relh, relwidth=spec_relw)
+
+workersListbox = Listbox(worker_register)
+workersListbox.place(relx=0, rely=0.7, relheight=0.1, relwidth=1)
+
+save_worker_btn = Button(worker_register, text='save', command=lambda: btn_save_worker_info())
+save_worker_btn.place(relx=0.35, rely=0.48, relwidth=spec_relw)
 
 main_btn = Button(worker_register, text='back to main page', command=lambda: change_to_main())
 main_btn.place(relx=0, rely=0.9)
