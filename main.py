@@ -3,7 +3,7 @@ from classes import *
 
 customers_obj_list = []
 halls_obj_list = [Hall('Classic Hall', 10, 7, 5), Hall('Special Hall', 20, 15, 10)]
-workers_obj_list = [Worker('Orxan', 'Mamedov', 'orxanmamedov', '123', 'admin')]
+workers_obj_list = [Worker('Orxan', 'Mamedov', '1', '1', 'admin')]
 
 
 # WORKER FUNCS - START

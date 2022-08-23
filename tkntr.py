@@ -20,15 +20,20 @@ def btn_sign_in():
 
 
 def btn_save_worker_info():
-    temp_worker = Worker(entry_worker_name.get(), entry_worker_surname.get(), entry_worker_login.get(),
-                         entry_worker_pass.get(), entry_worker_title.get())
-    add_worker(temp_worker)
-    workersListbox.insert(END, temp_worker)
-    entry_worker_name.delete(0, END)
-    entry_worker_surname.delete(0, END)
-    entry_worker_login.delete(0, END)
-    entry_worker_pass.delete(0, END)
-    entry_worker_title.delete(0, END)
+    if entry_worker_name.index('end') != 0 and entry_worker_surname.index('end') != 0 and \
+       entry_worker_login.index('end') != 0 and entry_worker_pass.index('end') != 0 and \
+       entry_worker_title.index('end') != 0:
+        temp_worker = Worker(entry_worker_name.get(), entry_worker_surname.get(), entry_worker_login.get(),
+                             entry_worker_pass.get(), entry_worker_title.get())
+        add_worker(temp_worker)
+        workersListbox.insert(END, temp_worker)
+        entry_worker_name.delete(0, END)
+        entry_worker_surname.delete(0, END)
+        entry_worker_login.delete(0, END)
+        entry_worker_pass.delete(0, END)
+        entry_worker_title.delete(0, END)
+    else:
+        lbl_worker_result.config(text='Some info is not given, check out all empty entries')
 
 
 def btn_delete_from_customers_listbox():
@@ -38,15 +43,20 @@ def btn_delete_from_customers_listbox():
 
 
 def btn_save_customer_info():
-    temp_cust = add_customer(entry_login.get(), entry_password.get(), entry_name.get(),
-                             entry_surname.get(), entry_age.get(), entry_email.get())
-    customersListbox.insert(END, temp_cust)
-    entry_login.delete(0, END)
-    entry_password.delete(0, END)
-    entry_name.delete(0, END)
-    entry_surname.delete(0, END)
-    entry_age.delete(0, END)
-    entry_email.delete(0, END)
+    if entry_login.index('end') != 0 and entry_password.index('end') != 0 and \
+            entry_name.index('end') != 0 and entry_surname.index('end') != 0 and \
+            entry_email.index('end') != 0:
+        temp_cust = add_customer(entry_login.get(), entry_password.get(), entry_name.get(),
+                                 entry_surname.get(), entry_age.get(), entry_email.get())
+        customersListbox.insert(END, temp_cust)
+        entry_login.delete(0, END)
+        entry_password.delete(0, END)
+        entry_name.delete(0, END)
+        entry_surname.delete(0, END)
+        entry_age.delete(0, END)
+        entry_email.delete(0, END)
+    else:
+        lbl_cust_result.config(text='Some info is not given, check out all empty entries')
 
 
 def btn_save_hall_info():
@@ -107,7 +117,7 @@ def change_to_worker_register():
 
 win = Tk()
 win.title('Cinema Theatre')
-win.geometry('1000x1000')
+win.geometry('500x500')
 
 login_frame = Frame(width=500, height=500)
 login_frame.place(x=0, y=0)
@@ -137,9 +147,10 @@ entry_user_password.place(relx=0.35, rely=0.5, relheight=spec_relh, relwidth=spe
 
 btn_signin_save = Button(login_frame, text='sign in', command=lambda: btn_sign_in())
 btn_signin_save.place(relx=0.45, rely=0.55, relwidth=0.1, relheight=0.05)
+btn_signin_save.bind('<Return>', lambda event: btn_sign_in())
 
 lbl_signin_result = Label(login_frame, text='')
-lbl_signin_result.place(relx=0.45, rely=0.62, relheight=lbl_relh, relwidth=spec_relw)
+lbl_signin_result.place(relx=0.35, rely=0.62, relheight=lbl_relh, relwidth=spec_relw)
 # LOGIN FRAME - END
 
 # WORKER REGISTER FRAME - START
@@ -178,6 +189,9 @@ workersListbox.place(relx=0, rely=0.7, relheight=0.1, relwidth=1)
 
 save_worker_btn = Button(worker_register, text='save', command=lambda: btn_save_worker_info())
 save_worker_btn.place(relx=0.35, rely=0.48, relwidth=spec_relw)
+
+lbl_worker_result = Label(worker_register, text='')
+lbl_worker_result.place(relx=0.25, rely=0.55)
 
 main_btn = Button(worker_register, text='back to main page', command=lambda: change_to_main())
 main_btn.place(relx=0, rely=0.9)
@@ -222,6 +236,9 @@ entry_email.place(relx=0.35, rely=0.49, relheight=spec_relh, relwidth=spec_relw)
 
 save_cust_btn = Button(customer_register, text='save', command=lambda: btn_save_customer_info())
 save_cust_btn.place(relx=0.35, rely=0.58, relwidth=spec_relw)
+
+lbl_cust_result = Label(customer_register, text='')
+lbl_cust_result.place(relx=0.25, rely=0.63)
 
 customersListbox = Listbox(customer_register)
 customersListbox.place(relx=0, rely=0.7, relheight=0.1, relwidth=1)
