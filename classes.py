@@ -11,8 +11,7 @@ class Worker:
         self.__title = title
 
     def __repr__(self):
-        res_str = f' ID: {self.__id}\n Worker name: {self.__worker_name}\n Worker surname: {self.__worker_surname}\n ' \
-                  f'Worker login: {self.__worker_login}\n Worker title: {self.__title}\n '
+        res_str = f'{self.__worker_name}, {self.__worker_surname}, {self.__worker_login}, {self.__title}'
         return res_str
 
     def get_login(self):
@@ -30,11 +29,10 @@ class Cinema:
         self.__id = uuid4()
         self.__film_name = film_name
         self.__scheduled_time = scheduled_time
-        self.__cinema_hall = 0
+        self.__cinema_hall = 1
 
     def __repr__(self):
-        res_str = f' ID: {self.__id}\n Film name: {self.__film_name}\n Scheduled time: {self.__scheduled_time}\n ' \
-                  f'Cinema hall: {self.__cinema_hall}\n '
+        res_str = f'{self.__film_name}, {self.__scheduled_time}, {self.__cinema_hall}\n '
         return res_str
 
     def get_name(self):
@@ -54,9 +52,8 @@ class Hall:
         self.cinema_obj_list = [Cinema('Classic film', 'Classic time')]
 
     def __str__(self):
-        res_str = f' ID: {self.__id}\n Hall name: {self.__hall_name}\n Economy places: {self.__eco_places}\n ' \
-                  f'Comfort places: {self.__comf_places}\n ' \
-                  f'VIP places: {self.__vip_places}\n Poster of this hall:\n {self.cinema_obj_list}'
+        res_str = f'{self.__hall_name}, {self.__eco_places}, {self.__comf_places}\n ,' \
+                  f' {self.__vip_places}, {self.cinema_obj_list}'
         return res_str
 
     def get_name(self):
@@ -67,20 +64,17 @@ class Hall:
 
 
 class Customer:
-    def __init__(self, login, password, name, surname, age, email):
+    def __init__(self, login, name, surname, age, email):
         self.__id = uuid4()
         self.__login = login
-        self.__password = password
         self.__name = name
         self.__surname = surname
         self.__age = age
         self.__email = email
         self.__orders_obj_list = []
 
-    def __str__(self):
-        res_str = f' ID: {self.__id}\n Login: {self.__login}\n Name: {self.__name}\n ' \
-                  f'Surname: {self.__surname}\n Age: {self.__age}\n E-mail: {self.__email}\n ' \
-                  f'Orders: {self.__orders_obj_list}'
+    def __repr__(self):
+        res_str = f'{self.__login}, {self.__name} {self.__surname}, {self.__age}, {self.__email}, {self.__orders_obj_list}'
         return res_str
 
     def get_login(self):

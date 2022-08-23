@@ -3,7 +3,8 @@ from classes import *
 
 customers_obj_list = []
 halls_obj_list = [Hall('Classic Hall', 10, 7, 5), Hall('Special Hall', 20, 15, 10)]
-workers_obj_list = [Worker('Orxan', 'Mamedov', '1', '1', 'admin')]
+workers_obj_list = [Worker('Orxan', 'Mamedov', '1', '1', 'cashier'),
+                    Worker('Samir', 'Aliyev', '2', '2', 'admin')]
 
 
 # WORKER FUNCS - START
@@ -15,7 +16,7 @@ def add_worker(worker):
 
 def find_worker_index(worker_name):
     for elem in range(len(workers_obj_list)):
-        if workers_obj_list[elem].get_name() == worker_name:
+        if workers_obj_list[elem].get_login() == worker_name:
             return elem
     return -1
 
@@ -26,8 +27,8 @@ def delete_worker(index):
 
 
 # CUSTOMER FUNCS - START
-def add_customer(login, password, name, surname, age, email):
-    temp_person = Customer(login, password, name, surname, age, email)
+def add_customer(login, name, surname, age, email):
+    temp_person = Customer(login, name, surname, age, email)
     customers_obj_list.append(temp_person)
     return temp_person
 
@@ -72,7 +73,7 @@ def find_cinema_and_hall_index(film_name):
 def add_cinema(film_name, scheduled_time, hall_name):
     if find_hall_index(hall_name) != -1:
         temp_cinema = Cinema(film_name, scheduled_time)
-        halls_obj_list[find_hall_index(hall_name)].add_cinema(temp_cinema)
+        halls_obj_list[find_hall_index(hall_name)].cinema_obj_list.append(temp_cinema)
         return temp_cinema
     return -1
 
