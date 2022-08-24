@@ -1,5 +1,5 @@
 from tkinter import *
-from main import *
+from funcs import *
 
 
 def btn_sign_in():
@@ -28,8 +28,8 @@ def load_customers():
 
 
 def load_cinemas():
-    for elem in halls_obj_list:
-        cinemasListbox.insert(END, elem.cinema_obj_list)
+    for elem in cinemas_obj_list:
+        cinemasListbox.insert(END, elem)
 
 
 def btn_save_worker_info():
@@ -61,17 +61,38 @@ def btn_delete_from_halls_listbox():
     halls_obj_list.pop(index)
 
 
-# def btn_delete_from_cinemas_listbox():
-#     index = cinemaListbox.curselection()[0]
-#     cinemaListbox.delete(index)
-#
+def btn_delete_from_cinema_listbox():
+    index = cinemaListbox.curselection()[0]
+    hall_name = cinemas_obj_list[index].get_hall()
+    hall_index = find_hall_index(hall_name)
+    halls_obj_list[hall_index].cinema_obj_list.pop(index)
+    cinemas_obj_list.pop(index)
+    cinemaListbox.delete(index)
+
+
+
+# def btn_save_edit_time():
+    # index = cinemaListbox.curselection()[0]
 
 
 def btn_edit_time():
     try:
-        index = cinemaListbox.curselection()[0]
-        edit_frame.place(relx=0.4, rely=0.4)
-        print(cinemaListbox.get(index))
+        edit = Toplevel()
+        edit.title('Edit time')
+        window_width = 300
+        window_height = 200
+        screen_width = edit.winfo_screenwidth()
+        screen_height = edit.winfo_screenheight()
+        center_x = int(screen_width / 2 - window_width / 2)
+        center_y = int(screen_height / 2 - window_height / 2)
+        edit.geometry(f'{window_width}x{window_height}+{center_x}+{center_y}')
+        lbl_new_time = Label(edit, text='enter new time')
+        lbl_new_time.place(relwidth=spec_relw, relheight=lbl_relh+0.03, relx=0.35, rely=0.25)
+        entry_new_time = Entry(edit)
+        entry_new_time.place(relheight=spec_relh+0.1, relwidth=spec_relw, relx=0.35, rely=0.35)
+        # save_new_time_btn = Button(edit, text='save', command=lambda: )
+        # save_new_time_btn.place(relx=0.35, rely=0.47, relwidth=spec_relw)
+        edit.mainloop()
     except IndexError:
         lbl_cinema_result.config(text='You did not select the film')
 
@@ -123,6 +144,7 @@ def btn_log_out():
     global prev_frame
     if prev_frame != 0:
         prev_frame.place_forget()
+    lbl_signin_result.config(text='')
     login_frame.place(x=0, y=0)
     prev_frame = login_frame
 
@@ -145,6 +167,7 @@ def change_to_customer_register():
     global prev_frame
     if prev_frame != 0:
         prev_frame.place_forget()
+    lbl_cust_result.config(text='')
     customer_register.place(x=0, y=0)
     prev_frame = customer_register
 
@@ -161,6 +184,7 @@ def change_to_hall_register():
     global prev_frame
     if prev_frame != 0:
         prev_frame.place_forget()
+    lbl_hall_result.config(text='')
     hall_register.place(x=0, y=0)
     prev_frame = hall_register
 
@@ -169,6 +193,7 @@ def change_to_cinema_register():
     global prev_frame
     if prev_frame != 0:
         prev_frame.place_forget()
+    lbl_cinema_result.config(text='')
     cinema_register.place(x=0, y=0)
     prev_frame = cinema_register
 
@@ -177,13 +202,20 @@ def change_to_worker_register():
     global prev_frame
     if prev_frame != 0:
         prev_frame.place_forget()
+    lbl_worker_result.config(text='')
     worker_register.place(x=0, y=0)
     prev_frame = worker_register
 
 
 win = Tk()
 win.title('Cinema Theatre')
-win.geometry('800x800')
+window_width = 800
+window_height = 800
+screen_width = win.winfo_screenwidth()
+screen_height = win.winfo_screenheight()
+center_x = int(screen_width / 2 - window_width / 2)
+center_y = int(screen_height / 2 - window_height / 2)
+win.geometry(f'{window_width}x{window_height}+{center_x}+{center_y}')
 
 login_frame = Frame(width=800, height=800)
 login_frame.place(x=0, y=0)
@@ -259,7 +291,7 @@ save_worker_btn = Button(worker_register, text='save', command=lambda: btn_save_
 save_worker_btn.place(relx=0.35, rely=0.48, relwidth=spec_relw)
 
 lbl_worker_result = Label(worker_register, text='')
-lbl_worker_result.place(relx=0.25, rely=0.55)
+lbl_worker_result.place(relx=0.34, rely=0.55)
 
 main_btn = Button(worker_register, text='back to main page', command=lambda: change_to_admin_frame())
 main_btn.place(relx=0, rely=0.9)
@@ -358,10 +390,11 @@ save_hall_btn = Button(hall_register, text='save', command=lambda: btn_save_hall
 save_hall_btn.place(relx=0.35, rely=0.5, relwidth=spec_relw)
 
 lbl_hall_result = Label(hall_register, text='')
-lbl_hall_result.place(relx=0.25, rely=0.55)
+lbl_hall_result.place(relx=0.34, rely=0.55)
 
 hallsListbox = Listbox(hall_register)
 hallsListbox.place(relx=0, rely=0.6, relheight=0.1, relwidth=1)
+
 
 delete_from_hallsList = Button(hall_register, command=lambda: btn_delete_from_halls_listbox(), text='Delete')
 delete_from_hallsList.place(relx=0.9, rely=0.9)
@@ -374,26 +407,26 @@ main_btn.place(relx=0, rely=0.9)
 lbl_film_name = Label(cinema_register, text='Film name')
 entry_film_name = Entry(cinema_register)
 
-lbl_film_name.place(relx=0, rely=0.2, relheight=lbl_relh, relwidth=spec_relw)
-entry_film_name.place(relx=0, rely=0.24, relheight=spec_relh, relwidth=spec_relw)
+lbl_film_name.place(relx=0, rely=0.29, relheight=lbl_relh, relwidth=spec_relw)
+entry_film_name.place(relx=0, rely=0.33, relheight=spec_relh, relwidth=spec_relw)
 
 lbl_sch_time = Label(cinema_register, text='Scheduled time')
 entry_sch_time = Entry(cinema_register)
 
-lbl_sch_time.place(relx=0, rely=0.29, relheight=lbl_relh, relwidth=spec_relw)
-entry_sch_time.place(relx=0, rely=0.33, relheight=spec_relh, relwidth=spec_relw)
+lbl_sch_time.place(relx=0, rely=0.38, relheight=lbl_relh, relwidth=spec_relw)
+entry_sch_time.place(relx=0, rely=0.42, relheight=spec_relh, relwidth=spec_relw)
 
 lbl_cinema_hall = Label(cinema_register, text='Cinema hall')
 entry_cinema_hall = Entry(cinema_register)
 
-lbl_cinema_hall.place(relx=0, rely=0.38, relheight=lbl_relh, relwidth=spec_relw)
-entry_cinema_hall.place(relx=0, rely=0.42, relheight=spec_relh, relwidth=spec_relw)
+lbl_cinema_hall.place(relx=0, rely=0.47, relheight=lbl_relh, relwidth=spec_relw)
+entry_cinema_hall.place(relx=0, rely=0.51, relheight=spec_relh, relwidth=spec_relw)
 
 save_cinema_btn = Button(cinema_register, text='save', command=lambda: btn_save_cinema_info())
-save_cinema_btn.place(relx=0.05, rely=0.47, relwidth=0.2, relheight=0.05)
+save_cinema_btn.place(relx=0.05, rely=0.56, relwidth=0.2, relheight=0.05)
 
 lbl_cinema_result = Label(cinema_register, text='')
-lbl_cinema_result.place(relx=0, rely=0.52)
+lbl_cinema_result.place(relx=0, rely=0.61)
 
 edit_time_btn = Button(cinema_register, text='edit time', command=lambda: btn_edit_time())
 edit_time_btn.place(relx=0.6, rely=0.4, relwidth=0.1)
@@ -403,6 +436,10 @@ edit_hall_btn.place(relx=0.6, rely=0.45, relwidth=0.1)
 
 cinemaListbox = Listbox(cinema_register)
 cinemaListbox.place(relx=0.7, rely=0, relheight=1, relwidth=0.3)
+cinemaListbox.insert(0, add_cinema('1', '1', 'Classic Hall'))
+
+delete_from_cinemaList = Button(cinema_register, command=lambda: btn_delete_from_cinema_listbox(), text='delete')
+delete_from_cinemaList.place(relx=0.6, rely=0.5, relwidth=0.1)
 
 main_btn = Button(cinema_register, text='back to main page', command=lambda: change_to_admin_frame())
 main_btn.place(relx=0, rely=0.96)

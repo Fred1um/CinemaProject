@@ -44,6 +44,9 @@ class Cinema:
     def edit_hall(self, new_hall):
         self.__cinema_hall = new_hall
 
+    def get_hall(self):
+        return self.__cinema_hall
+
 
 class Hall:
     def __init__(self, hall_name, eco_places, comf_places, vip_places):

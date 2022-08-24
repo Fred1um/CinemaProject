@@ -5,6 +5,7 @@ customers_obj_list = []
 halls_obj_list = [Hall('Classic Hall', 10, 7, 5), Hall('Special Hall', 20, 15, 10)]
 workers_obj_list = [Worker('Orxan', 'Mamedov', '1', '1', 'cashier'),
                     Worker('Samir', 'Aliyev', '2', '2', 'admin')]
+cinemas_obj_list = []
 
 
 # WORKER FUNCS - START
@@ -75,6 +76,7 @@ def add_cinema(film_name, scheduled_time, hall_name):
         temp_cinema = Cinema(film_name, scheduled_time)
         temp_cinema.edit_hall(hall_name)
         halls_obj_list[find_hall_index(hall_name)].cinema_obj_list.append(temp_cinema)
+        cinemas_obj_list.append(temp_cinema)
         return temp_cinema
     return -1
 
