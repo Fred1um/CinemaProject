@@ -73,6 +73,7 @@ def find_cinema_and_hall_index(film_name):
 def add_cinema(film_name, scheduled_time, hall_name):
     if find_hall_index(hall_name) != -1:
         temp_cinema = Cinema(film_name, scheduled_time)
+        temp_cinema.edit_hall(hall_name)
         halls_obj_list[find_hall_index(hall_name)].cinema_obj_list.append(temp_cinema)
         return temp_cinema
     return -1

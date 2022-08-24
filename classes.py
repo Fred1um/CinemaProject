@@ -29,10 +29,10 @@ class Cinema:
         self.__id = uuid4()
         self.__film_name = film_name
         self.__scheduled_time = scheduled_time
-        self.__cinema_hall = 1
+        self.__cinema_hall = ''
 
     def __repr__(self):
-        res_str = f'{self.__film_name}, {self.__scheduled_time}, {self.__cinema_hall}\n '
+        res_str = f'{self.__film_name}, {self.__scheduled_time}, {self.__cinema_hall}'
         return res_str
 
     def get_name(self):
@@ -40,6 +40,9 @@ class Cinema:
 
     def change_time(self, new_time):
         self.__scheduled_time = new_time
+
+    def edit_hall(self, new_hall):
+        self.__cinema_hall = new_hall
 
 
 class Hall:
@@ -49,7 +52,7 @@ class Hall:
         self.__eco_places = eco_places
         self.__comf_places = comf_places
         self.__vip_places = vip_places
-        self.cinema_obj_list = [Cinema('Classic film', 'Classic time')]
+        self.cinema_obj_list = []
 
     def __str__(self):
         res_str = f'{self.__hall_name}, {self.__eco_places}, {self.__comf_places}\n ,' \

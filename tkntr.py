@@ -67,6 +67,15 @@ def btn_delete_from_halls_listbox():
 #
 
 
+def btn_edit_time():
+    try:
+        index = cinemaListbox.curselection()[0]
+        edit_frame.place(relx=0.4, rely=0.4)
+        print(cinemaListbox.get(index))
+    except IndexError:
+        lbl_cinema_result.config(text='You did not select the film')
+
+
 def btn_save_customer_info():
     if entry_login.index('end') != 0 and entry_name.index('end') != 0 and entry_surname.index('end') != 0 and \
             entry_email.index('end') != 0:
@@ -99,10 +108,13 @@ def btn_save_cinema_info():
     if entry_film_name.index('end') != 0 and entry_sch_time.index('end') != 0 and \
             entry_cinema_hall.index('end') != 0:
         temp_cin = add_cinema(entry_film_name.get(), entry_sch_time.get(), entry_cinema_hall.get())
-        cinemasListbox.insert(END, temp_cin)
-        entry_film_name.delete(0, END)
-        entry_sch_time.delete(0, END)
-        entry_cinema_hall.delete(0, END)
+        if temp_cin != -1:
+            cinemaListbox.insert(END, temp_cin)
+            entry_film_name.delete(0, END)
+            entry_sch_time.delete(0, END)
+            entry_cinema_hall.delete(0, END)
+        else:
+            lbl_cinema_result.config(text='This hall is not exist, try again')
     else:
         lbl_cinema_result.config(text='Some info is not given, check out all empty entries')
 
@@ -182,6 +194,7 @@ ticket_frame = Frame(width=800, height=800)
 customer_register = Frame(width=800, height=800)
 hall_register = Frame(width=800, height=800)
 cinema_register = Frame(width=800, height=800)
+edit_frame = Frame(width=200, height=200)
 
 spec_relh = 0.05
 spec_relw = 0.3
@@ -361,32 +374,38 @@ main_btn.place(relx=0, rely=0.9)
 lbl_film_name = Label(cinema_register, text='Film name')
 entry_film_name = Entry(cinema_register)
 
-lbl_film_name.place(relx=0.35, rely=0.2, relheight=lbl_relh, relwidth=spec_relw)
-entry_film_name.place(relx=0.35, rely=0.24, relheight=spec_relh, relwidth=spec_relw)
+lbl_film_name.place(relx=0, rely=0.2, relheight=lbl_relh, relwidth=spec_relw)
+entry_film_name.place(relx=0, rely=0.24, relheight=spec_relh, relwidth=spec_relw)
 
 lbl_sch_time = Label(cinema_register, text='Scheduled time')
 entry_sch_time = Entry(cinema_register)
 
-lbl_sch_time.place(relx=0.35, rely=0.29, relheight=lbl_relh, relwidth=spec_relw)
-entry_sch_time.place(relx=0.35, rely=0.33, relheight=spec_relh, relwidth=spec_relw)
+lbl_sch_time.place(relx=0, rely=0.29, relheight=lbl_relh, relwidth=spec_relw)
+entry_sch_time.place(relx=0, rely=0.33, relheight=spec_relh, relwidth=spec_relw)
 
 lbl_cinema_hall = Label(cinema_register, text='Cinema hall')
 entry_cinema_hall = Entry(cinema_register)
 
-lbl_cinema_hall.place(relx=0.35, rely=0.38, relheight=lbl_relh, relwidth=spec_relw)
-entry_cinema_hall.place(relx=0.35, rely=0.42, relheight=spec_relh, relwidth=spec_relw)
+lbl_cinema_hall.place(relx=0, rely=0.38, relheight=lbl_relh, relwidth=spec_relw)
+entry_cinema_hall.place(relx=0, rely=0.42, relheight=spec_relh, relwidth=spec_relw)
 
 save_cinema_btn = Button(cinema_register, text='save', command=lambda: btn_save_cinema_info())
-save_cinema_btn.place(relx=0.35, rely=0.55, relwidth=spec_relw)
+save_cinema_btn.place(relx=0.05, rely=0.47, relwidth=0.2, relheight=0.05)
 
 lbl_cinema_result = Label(cinema_register, text='')
-lbl_cinema_result.place(relx=0.25, rely=0.6)
+lbl_cinema_result.place(relx=0, rely=0.52)
+
+edit_time_btn = Button(cinema_register, text='edit time', command=lambda: btn_edit_time())
+edit_time_btn.place(relx=0.6, rely=0.4, relwidth=0.1)
+
+edit_hall_btn = Button(cinema_register, text='edit hall')
+edit_hall_btn.place(relx=0.6, rely=0.45, relwidth=0.1)
 
 cinemaListbox = Listbox(cinema_register)
-cinemaListbox.place(relx=0, rely=0.7, relheight=0.1, relwidth=1)
+cinemaListbox.place(relx=0.7, rely=0, relheight=1, relwidth=0.3)
 
 main_btn = Button(cinema_register, text='back to main page', command=lambda: change_to_admin_frame())
-main_btn.place(relx=0, rely=0.9)
+main_btn.place(relx=0, rely=0.96)
 # CINEMA REGISTER FRAME - END
 
 # ADMIN FRAME - START
