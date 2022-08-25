@@ -44,14 +44,17 @@ class Cinema:
     def get_name(self):
         return self.__film_name
 
+    def get_hall(self):
+        return self.__cinema_hall
+
+    def get_time(self):
+        return self.__scheduled_time
+
     def change_time(self, new_time):
         self.__scheduled_time = new_time
 
     def edit_hall(self, new_hall):
         self.__cinema_hall = new_hall
-
-    def get_hall(self):
-        return self.__cinema_hall
 
 
 class Hall:
@@ -61,18 +64,23 @@ class Hall:
         self.__eco_places = eco_places
         self.__comf_places = comf_places
         self.__vip_places = vip_places
-        self.cinema_obj_list = []
 
     def __str__(self):
         res_str = f'{self.__hall_name}, {self.__eco_places}, {self.__comf_places}\n ,' \
-                  f' {self.__vip_places}, {self.cinema_obj_list}'
+                  f' {self.__vip_places}'
         return res_str
 
     def get_name(self):
         return self.__hall_name
 
-    def add_cinema(self, cinema):
-        self.cinema_obj_list.append(cinema)
+    def get_eco(self):
+        return self.__eco_places
+
+    def get_comf(self):
+        return self.__comf_places
+
+    def get_vip(self):
+        return self.__vip_places
 
 
 class Customer:
@@ -91,3 +99,15 @@ class Customer:
 
     def get_login(self):
         return self.__login
+
+    def get_name(self):
+        return self.__name
+
+    def get_surname(self):
+        return self.__surname
+
+    def get_age(self):
+        return self.__age
+
+    def get_email(self):
+        return self.__email

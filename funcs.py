@@ -11,8 +11,8 @@ cinemas_obj_list = []
 # WORKER FUNCS - START
 def add_worker(worker):
     temp_worker = worker
-    cur.execute(f"INSERT INTO workers VALUES (?, ?, ?, ?, ?)", temp_worker.get_name(), temp_worker.get_surname(),
-                temp_worker.get_login(), temp_worker.get_pass(), temp_worker.get_title())
+    cur.execute(f"INSERT INTO workers (worker_name, surname, login, password, title) VALUES (?, ?, ?, ?, ?)",
+                (temp_worker.get_name(), temp_worker.get_surname(), temp_worker.get_login(), temp_worker.get_pass(), temp_worker.get_title()))
     db.commit()
     return temp_worker
 
@@ -30,9 +30,12 @@ def delete_worker(index):
 
 
 # CUSTOMER FUNCS - START
-def add_customer(login, name, surname, age, email):
-    temp_person = Customer(login, name, surname, age, email)
-    customers_obj_list.append(temp_person)
+def add_customer(customer):
+    temp_person = customer
+    cur.execute(f"INSERT INTO customers (login, customer_name, surname, age, email) VALUES (?, ?, ?, ?, ?)",
+                (temp_person.get_login(), temp_person.get_name(), temp_person.get_surname(), temp_person.get_age(),
+                 temp_person.get_email()))
+    db.commit()
     return temp_person
 
 
@@ -49,9 +52,11 @@ def delete_customer(index):
 
 
 # HALL FUNCS - START
-def add_hall(hall_name, eco_places, comf_places, vip_places):
-    temp_hall = Hall(hall_name, eco_places, comf_places, vip_places)
-    halls_obj_list.append(temp_hall)
+def add_hall(hall):
+    temp_hall = hall
+    cur.execute(f"INSERT INTO halls (hall_name, economy, comfort, vip) VALUES (?, ?, ?, ?)",
+                (temp_hall.get_name(), temp_hall.get_eco(), temp_hall.get_comf(), temp_hall.get_vip()))
+    db.commit()
     return temp_hall
 
 
@@ -73,10 +78,12 @@ def find_cinema_and_hall_index(film_name):
     return -1
 
 
-def add_cinema(film_name, scheduled_time, hall_name):
-    if find_hall_index(hall_name) != -1:
-        temp_cinema = Cinema(film_name, scheduled_time)
-        temp_cinema.edit_hall(hall_name)
+def add_cinema(cinema):
+    if find_hall_index(cinema.get_name()) != -1:
+        temp_cinema = cinema
+        cur.execute(f"INSERT INTO cinemas (film_name, sch_time, hall) VALUES (?, ?, ?)",
+                    (temp_cinema.get_name(), temp_cinema.get_time(), temp_cinema.get_hall()))
+        db.commit()
         halls_obj_list[find_hall_index(hall_name)].cinema_obj_list.append(temp_cinema)
         cinemas_obj_list.append(temp_cinema)
         return temp_cinema
