@@ -1,5 +1,5 @@
-# import os
 from classes import *
+from sql import *
 
 customers_obj_list = []
 halls_obj_list = [Hall('Classic Hall', 10, 7, 5), Hall('Special Hall', 20, 15, 10)]
@@ -11,7 +11,9 @@ cinemas_obj_list = []
 # WORKER FUNCS - START
 def add_worker(worker):
     temp_worker = worker
-    workers_obj_list.append(temp_worker)
+    cur.execute(f"INSERT INTO workers VALUES (?, ?, ?, ?, ?)", temp_worker.get_name(), temp_worker.get_surname(),
+                temp_worker.get_login(), temp_worker.get_pass(), temp_worker.get_title())
+    db.commit()
     return temp_worker
 
 

@@ -14,6 +14,12 @@ class Worker:
         res_str = f'{self.__worker_name}, {self.__worker_surname}, {self.__worker_login}, {self.__title}'
         return res_str
 
+    def get_name(self):
+        return self.__worker_name
+
+    def get_surname(self):
+        return self.__worker_surname
+
     def get_login(self):
         return self.__worker_login
 
