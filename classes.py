@@ -1,4 +1,6 @@
 from uuid import uuid4
+import sqlite3
+from tkntr import *
 
 
 class Worker:
@@ -84,9 +86,9 @@ class Hall:
 
 
 class Customer:
-    def __init__(self, login, name, surname, age, email):
+    def __init__(self, customer_login, name, surname, age, email):
         self.__id = uuid4()
-        self.__login = login
+        self.__login = customer_login
         self.__name = name
         self.__surname = surname
         self.__age = age

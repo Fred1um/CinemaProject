@@ -1,5 +1,4 @@
 from classes import *
-from sql import *
 
 customers_obj_list = []
 halls_obj_list = [Hall('Classic Hall', 10, 7, 5), Hall('Special Hall', 20, 15, 10)]
