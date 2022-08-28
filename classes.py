@@ -1,5 +1,4 @@
 from uuid import uuid4
-import sqlite3
 from tkntr import *
 
 
@@ -33,11 +32,11 @@ class Worker:
 
 
 class Cinema:
-    def __init__(self, film_name, scheduled_time):
+    def __init__(self, film_name, scheduled_time, cinema_hall):
         self.__id = uuid4()
         self.__film_name = film_name
         self.__scheduled_time = scheduled_time
-        self.__cinema_hall = ''
+        self.__cinema_hall = cinema_hall
 
     def __repr__(self):
         res_str = f'{self.__film_name}, {self.__scheduled_time}, {self.__cinema_hall}'
