@@ -1,7 +1,6 @@
 import sqlite3
 from tkinter import *
 from tkinter import ttk
-import peewee
 from classes import *
 
 spec_relh = 0.05
@@ -271,53 +270,58 @@ class CinemaFrame(Frame):
         self.view_cinemas()
 
     def init_cinema(self):
-        cinema = Frame(width=800, height=800)
-        cinema.place(x=0, y=0)
+        cinema_frame = Frame(width=800, height=800)
+        cinema_frame.place(x=0, y=0)
 
-        self.lbl_film_name = Label(cinema, text='Film name')
-        self.entry_film_name = ttk.Entry(cinema)
+        lbl_film_name = Label(cinema_frame, text='Film name')
+        self.entry_film_name = ttk.Entry(cinema_frame)
 
-        self.lbl_film_name.place(relx=0.34, rely=0.29, relheight=lbl_relh, relwidth=spec_relw)
+        lbl_film_name.place(relx=0.34, rely=0.29, relheight=lbl_relh, relwidth=spec_relw)
         self.entry_film_name.place(relx=0.34, rely=0.33, relheight=spec_relh, relwidth=spec_relw)
 
-        self.lbl_sch_time = Label(cinema, text='Scheduled time')
-        self.entry_sch_time = ttk.Entry(cinema)
+        lbl_sch_time = Label(cinema_frame, text='Scheduled time')
+        self.entry_sch_time = ttk.Entry(cinema_frame)
 
-        self.lbl_sch_time.place(relx=0.34, rely=0.38, relheight=lbl_relh, relwidth=spec_relw)
+        lbl_sch_time.place(relx=0.34, rely=0.38, relheight=lbl_relh, relwidth=spec_relw)
         self.entry_sch_time.place(relx=0.34, rely=0.42, relheight=spec_relh, relwidth=spec_relw)
 
-        self.lbl_cinema_hall = Label(cinema, text='Cinema hall')
-        self.entry_cinema_hall = ttk.Entry(cinema)
+        lbl_cinema_hall = Label(cinema_frame, text='Cinema hall')
+        self.entry_cinema_hall = ttk.Entry(cinema_frame)
 
-        self.lbl_cinema_hall.place(relx=0.34, rely=0.47, relheight=lbl_relh, relwidth=spec_relw)
+        lbl_cinema_hall.place(relx=0.34, rely=0.47, relheight=lbl_relh, relwidth=spec_relw)
         self.entry_cinema_hall.place(relx=0.34, rely=0.51, relheight=spec_relh, relwidth=spec_relw)
 
-        save_cinema_btn = ttk.Button(cinema, text='save')
-        save_cinema_btn.place(relx=0.39, rely=0.57, relwidth=0.2, relheight=0.05)
-        save_cinema_btn.bind('<Button-1>', lambda event: self.cinema_record(self.entry_film_name.get(),
+        self.save_cinema_btn = ttk.Button(cinema_frame, text='save')
+        self.save_cinema_btn.place(relx=0.39, rely=0.57, relwidth=0.2, relheight=0.05)
+        self.save_cinema_btn.bind('<Button-1>', lambda event: self.cinema_record(self.entry_film_name.get(),
                                                                             self.entry_sch_time.get(),
                                                                             self.entry_cinema_hall.get()))
 
-        self.lbl_cinema_result = Label(cinema, text='', anchor=CENTER)
+        self.save_edited_info = ttk.Button(cinema_frame, text='edit')
+        self.save_edited_info.bind('<Button-1>', lambda event: self.edit_record(self.entry_film_name.get(),
+                                                                             self.entry_sch_time.get(),
+                                                                             self.entry_cinema_hall.get()))
+
+        self.lbl_cinema_result = Label(cinema_frame, text='', anchor=CENTER)
         self.lbl_cinema_result.place(relx=0.24, rely=0.62, relwidth=0.5)
 
         self.cinema_search_img = PhotoImage(file='icons/search.png')
-        cinema_search = ttk.Button(cinema, image=self.cinema_search_img, command=self.open_search_cinema)
+        cinema_search = ttk.Button(cinema_frame, image=self.cinema_search_img, command=self.open_search_cinema)
         cinema_search.place(relx=0.92, rely=0.5, width=55, height=55)
 
         self.cinema_refresh_img = PhotoImage(file='icons/refresh.png')
-        cinema_refresh = ttk.Button(cinema, image=self.cinema_refresh_img, command=self.view_cinemas)
+        cinema_refresh = ttk.Button(cinema_frame, image=self.cinema_refresh_img, command=self.view_cinemas)
         cinema_refresh.place(relx=0.92, rely=0.6, width=55, height=55)
 
         self.cinema_edit_img = PhotoImage(file='icons/clock_update.png')
-        cinema_edit_btn = ttk.Button(cinema, image=self.cinema_edit_img, command=self.open_edit_cinema)
+        cinema_edit_btn = ttk.Button(cinema_frame, image=self.cinema_edit_img, command=self.default_data)
         cinema_edit_btn.place(relx=0.92, rely=0.725,  width=55, height=55)
 
         self.delete_cinema_img = PhotoImage(file='icons/delete.png')
-        delete_cinema_btn = ttk.Button(cinema, image=self.delete_cinema_img, command=self.delete_records)
+        delete_cinema_btn = ttk.Button(cinema_frame, image=self.delete_cinema_img, command=self.delete_records)
         delete_cinema_btn.place(relx=0.92, rely=0.8, width=55, height=55)
 
-        self.tree = ttk.Treeview(cinema, height=10, columns=('ID', 'film_name', 'scheduled_time', 'cinema_hall'),
+        self.tree = ttk.Treeview(cinema_frame, height=10, columns=('ID', 'film_name', 'scheduled_time', 'cinema_hall'),
                                  show='headings')
 
         self.tree.column('ID', width=30, anchor=CENTER)
@@ -332,11 +336,11 @@ class CinemaFrame(Frame):
 
         self.tree.place(relx=0.175, rely=0.65)
 
-        self.scroll = ttk.Scrollbar(cinema, command=self.tree.yview)
+        self.scroll = ttk.Scrollbar(cinema_frame, command=self.tree.yview)
         self.scroll.place(relx=0.87, rely=0.79, relheight=0.3, anchor=E)
         self.tree.configure(yscrollcommand=self.scroll.set)
 
-        main_btn = ttk.Button(cinema, text='back to main page', command=self.open_admin)
+        main_btn = ttk.Button(cinema_frame, text='back to main page', command=self.open_admin)
         main_btn.place(relx=0, rely=0.96)
 
     def cinema_record(self, film_name, scheduled_time, cinema_hall):
@@ -373,11 +377,41 @@ class CinemaFrame(Frame):
         [self.tree.delete(i) for i in self.tree.get_children()]
         [self.tree.insert('', 'end', values=row) for row in self.db.cur.fetchall()]
 
+    def default_data(self):
+        try:
+            self.entry_film_name.delete(0, END)
+            self.entry_sch_time.delete(0, END)
+            self.entry_cinema_hall.delete(0, END)
+            self.db.cur.execute('''SELECT * FROM cinemas WHERE id=?''',
+                                (self.tree.set(self.tree.selection()[0], '#1'), ))
+            row = self.db.cur.fetchone()
+            self.entry_film_name.insert(0, row[1])
+            self.entry_sch_time.insert(0, row[2])
+            self.entry_cinema_hall.insert(0, row[3])
+            self.save_cinema_btn.place_forget()
+            self.save_edited_info.place(relx=0.39, rely=0.57, relwidth=0.2, relheight=0.05)
+        except IndexError:
+            self.lbl_cinema_result.config(text='You have not selected the film')
+
     def edit_record(self, film_name, scheduled_time, cinema_hall):
-        self.db.cur.execute('''UPDATE cinemas SET film_name=?, scheduled_time=?, cinema_hall=? WHERE ID=?''',
-                            (film_name, scheduled_time, cinema_hall, self.tree.set(self.tree.selection()[0], '#1')))
-        self.db.con.commit()
-        self.view_cinemas()
+        if self.entry_film_name.index('end') != 0 and self.entry_sch_time.index('end') != 0 and \
+                self.entry_cinema_hall.index('end') != 0:
+            db.cur.execute(f"SELECT hall_name FROM halls WHERE hall_name= '{self.entry_cinema_hall.get()}'")
+            if db.cur.fetchone() is None:
+                self.lbl_cinema_result.config(text='This hall is not exist')
+            else:
+                self.db.cur.execute('''UPDATE cinemas SET film_name=?, scheduled_time=?, cinema_hall=? WHERE ID=?''',
+                                    (film_name, scheduled_time, cinema_hall, self.tree.set(self.tree.selection()[0], '#1')))
+                self.db.con.commit()
+                self.entry_film_name.delete(0, END)
+                self.entry_sch_time.delete(0, END)
+                self.entry_cinema_hall.delete(0, END)
+                self.view_cinemas()
+                self.save_edited_info.place_forget()
+                self.save_cinema_btn.place(relx=0.39, rely=0.57, relwidth=0.2, relheight=0.05)
+        else:
+            self.lbl_cinema_result.config(text='Some info is not given, check out all empty entries')
+
 
     @staticmethod
     def open_admin():
@@ -386,68 +420,6 @@ class CinemaFrame(Frame):
     @staticmethod
     def open_search_cinema():
         SearchCinema()
-
-    @staticmethod
-    def open_edit_cinema():
-        EditCinema()
-
-
-class EditCinema(Toplevel):
-    def __init__(self):
-        super().__init__()
-        self.init_edit()
-        self.cinema = CinemaFrame()
-        self.db = db
-        self.default_data()
-
-    def init_edit(self):
-        self.title('Edit')
-        self.width_window = 400
-        self.height_window = 220
-        self.width_screen = win.winfo_screenwidth()
-        self.height_screen = win.winfo_screenheight()
-        self.x_center = int(self.width_screen / 2 - self.width_window / 2)
-        self.y_center = int(self.height_screen / 2 - self.height_window / 2)
-        self.geometry(f'{self.width_window}x{self.height_window}+{self.x_center}+{self.y_center}')
-        self.resizable(False, False)
-
-        label_film_name = ttk.Label(self, text='Film name')
-        label_film_name.place(x=50, y=50)
-
-        label_scheduled_time = ttk.Label(self, text='Scheduled time')
-        label_scheduled_time.place(x=50, y=80)
-
-        label_cinema_hall = ttk.Label(self, text='Cinema hall')
-        label_cinema_hall.place(x=50, y=110)
-
-        self.entry_film_name = ttk.Entry(self)
-        self.entry_film_name.place(x=200, y=50)
-
-        self.entry_scheduled_time = ttk.Entry(self)
-        self.entry_scheduled_time.place(x=200, y=80)
-
-        self.entry_cinema_hall = ttk.Entry(self)
-        self.entry_cinema_hall.place(x=200, y=110)
-
-        btn_cancel = ttk.Button(self, text='Close', command=self.destroy)
-        btn_cancel.place(x=300, y=170)
-
-        self.btn_ok = ttk.Button(self, text='OK')
-        self.btn_ok.place(x=200, y=170)
-        self.btn_ok.bind('<Button-1>', lambda event: self.cinema.edit_record(self.entry_film_name.get(),
-                                                                             self.entry_scheduled_time.get(),
-                                                                              self.entry_cinema_hall.get()))
-
-        self.grab_set()
-        self.focus_set()
-
-    def default_data(self):
-        self.db.cur.execute('''SELECT * FROM cinemas WHERE id=?''',
-                            (self.cinema.tree.set(self.cinema.tree.selection()[0], '#1'), ))
-        row = self.db.cur.fetchone()
-        self.entry_film_name.insert(0, row[1])
-        self.entry_scheduled_time.insert(0, row[2])
-        self.entry_cinema_hall.insert(0, row[3])
 
 
 class SearchCinema(Toplevel):
@@ -598,7 +570,7 @@ class WorkerFrame(Frame):
             self.lbl_worker_result.config(text='Some info is not given, check out all empty entries')
 
     def view_workers(self):
-        self.db.cur.execute('''SELECT * FROM workers''')
+        self.db.cur.execute('''SELECT * FROM workers ORDER BY worker_title ASC''')
         [self.tree.delete(i) for i in self.tree.get_children()]
         [self.tree.insert('', 'end', values=row) for row in self.db.cur.fetchall()]
 
@@ -656,7 +628,6 @@ class SearchWorker(Toplevel):
 
         self.grab_set()
         self.focus_set()
-
 
 
 class CashierFrame(Frame):
@@ -743,15 +714,17 @@ class CustomerFrame(Frame):
         self.lbl_cust_result.place(relx=0.25, rely=0.55, relwidth=0.5)
 
         self.tree = ttk.Treeview(customer, height=10, columns=('ID', 'customer_login', 'customer_name',
-                                                               'customer_surname', 'customer_age', 'customer_email'),
+                                                               'customer_surname', 'customer_age', 'customer_email',
+                                                               'customer_orders'),
                                  show='headings')
 
         self.tree.column('ID', width=30, anchor=CENTER)
         self.tree.column('customer_login', width=100, anchor=CENTER)
-        self.tree.column('customer_name', width=150, anchor=CENTER)
-        self.tree.column('customer_surname', width=150, anchor=CENTER)
+        self.tree.column('customer_name', width=100, anchor=CENTER)
+        self.tree.column('customer_surname', width=100, anchor=CENTER)
         self.tree.column('customer_age', width=50, anchor=CENTER)
-        self.tree.column('customer_email', width=300, anchor=CENTER)
+        self.tree.column('customer_email', width=250, anchor=CENTER)
+        self.tree.column('customer_orders', width=150, anchor=CENTER)
 
         self.tree.heading('ID', text='ID')
         self.tree.heading('customer_name', text='Customer name')
@@ -759,6 +732,7 @@ class CustomerFrame(Frame):
         self.tree.heading('customer_login', text='Customer login')
         self.tree.heading('customer_age', text='Customer age')
         self.tree.heading('customer_email', text='Customer email')
+        self.tree.heading('customer_orders', text='Customer orders')
 
         self.tree.place(relx=0, rely=0.65)
 
@@ -832,8 +806,15 @@ class TicketFrame(Frame):
 
         self.cinemas_tree.place(relx=0.5, rely=0)
 
+        buy_btn = ttk.Button(ticket, text='buy')
+        buy_btn.place(relx=0.275, rely=0.5, relwidth=0.2)
+        buy_btn.bind('<Button-1>', lambda event: self.buy_a_ticket())
+
+        self.lbl_ticket_result = ttk.Label(ticket, text='')
+        self.lbl_ticket_result.place(relx=0.26, rely=0.55, relwidth=0.225)
+
         main_btn = ttk.Button(ticket, text='back to main page', command=self.open_cashier)
-        main_btn.place(relx=0.255, rely=0.96, relwidth=0.24)
+        main_btn.place(relx=0.275, rely=0.96, relwidth=0.2)
 
     def view_customers(self):
         self.db.cur.execute('''SELECT customer_login FROM customers''')
@@ -841,9 +822,22 @@ class TicketFrame(Frame):
         [self.customers_tree.insert('', 'end', values=row) for row in self.db.cur.fetchall()]
 
     def view_cinemas(self):
-        self.db.cur.execute('''SELECT film_name, scheduled_time, cinema_hall FROM cinemas''')
+        self.db.cur.execute('''SELECT film_name, scheduled_time, cinema_hall FROM cinemas ORDER BY scheduled_time ASC''')
         [self.cinemas_tree.delete(i) for i in self.cinemas_tree.get_children()]
         [self.cinemas_tree.insert('', 'end', values=row) for row in self.db.cur.fetchall()]
+
+    def buy_a_ticket(self):
+        try:
+            self.lbl_ticket_result.config(text='')
+            self.db.cur.execute('''SELECT * FROM customers WHERE id=?''',
+                                (self.customers_tree.set(self.customers_tree.selection()[0], '#1'),))
+            customer_row = self.db.cur.fetchone()
+            self.db.cur.execute('''SELECT * FROM cinemas WHERE id=?''',
+                                (self.cinemas_tree.set(self.cinemas_tree.selection()[0], '#1'),))
+            cinema_row = self.db.cur.fetchone()
+        except IndexError:
+            self.lbl_ticket_result.config(text='You have not selected something')
+        # self.db.cur.execute('''INSERT INTO customers (customer_orders) VALUES (?) WHERE ID=?'''),
 
     @staticmethod
     def open_cashier():
@@ -869,7 +863,8 @@ class DB:
             customer_name text, 
             customer_surname text, 
             customer_age text,
-            customer_email text)''')
+            customer_email text,
+            customer_orders text)''')
         self.cur.execute(
             '''CREATE TABLE IF NOT EXISTS halls(
             id integer primary key, 
@@ -906,6 +901,7 @@ class DB:
                             customer_email) VALUES (?, ?, ?, ?, ?)''',
                          (customer_login, customer_name, customer_surname, customer_age, customer_email))
         self.con.commit()
+
 
 
 if __name__ == '__main__':
