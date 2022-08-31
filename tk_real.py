@@ -2,10 +2,16 @@ import sqlite3
 from tkinter import *
 from tkinter import ttk
 from classes import *
+from time import strftime
 
+eco_price = '5'
+comf_price = '8'
+vip_price = '10'
 spec_relh = 0.05
 spec_relw = 0.3
 lbl_relh = 0.04
+auth_worker_name = ''
+
 
 
 class Main(Frame):
@@ -36,8 +42,8 @@ class Main(Frame):
         self.lbl_signin_result = Label(login, text='')
         self.lbl_signin_result.place(relx=0.35, rely=0.62, relheight=lbl_relh, relwidth=spec_relw)
 
+
     def login(self):
-        global prev_frame
         login1 = self.entry_user_login.get()
         password = self.entry_user_password.get()
         self.db.cur.execute(
@@ -49,6 +55,11 @@ class Main(Frame):
             self.db.cur.execute(
                 f"SELECT worker_title FROM workers WHERE worker_login = '{login1}' AND worker_pass = '{password}'")
             title = self.db.cur.fetchone()[0]
+            global auth_worker_name
+            self.db.cur.execute(
+                f"SELECT worker_name FROM workers WHERE worker_login = '{login1}' AND worker_pass = '{password}'")
+            self.db.con.commit()
+            auth_worker_name = self.db.cur.fetchone()[0]
             if title == 'admin':
                 self.open_admin()
             elif title == 'cashier':
@@ -72,6 +83,10 @@ class AdminFrame(Frame):
         admin = Frame(width=800, height=800)
         admin.place(x=0, y=0)
 
+        global auth_worker_name
+        lbl_auth_worker = ttk.Label(admin, text=f'Welcome, {auth_worker_name}')
+        lbl_auth_worker.place(relx=0.5, rely=0.2, anchor=CENTER)
+
         hall_btn = ttk.Button(admin, text='Hall register', command=self.open_hall)
         hall_btn.place(relx=0.5, rely=0.4, anchor=CENTER)
 
@@ -83,6 +98,7 @@ class AdminFrame(Frame):
 
         log_out_btn = ttk.Button(admin, text='log out', command=self.log_out)
         log_out_btn.place(relx=0, rely=0.96)
+
 
     @staticmethod
     def open_hall():
@@ -412,7 +428,6 @@ class CinemaFrame(Frame):
         else:
             self.lbl_cinema_result.config(text='Some info is not given, check out all empty entries')
 
-
     @staticmethod
     def open_admin():
         AdminFrame()
@@ -639,6 +654,10 @@ class CashierFrame(Frame):
         cashier = Frame(width=800, height=800)
         cashier.place(x=0, y=0)
 
+        global auth_worker_name
+        lbl_auth_worker = ttk.Label(cashier, text=f'Welcome, {auth_worker_name}')
+        lbl_auth_worker.place(relx=0.5, rely=0.2, anchor=CENTER)
+
         customer_btn = ttk.Button(cashier, text='Customer register', command=self.open_customer)
         customer_btn.place(relx=0.5, rely=0.475, anchor=CENTER)
 
@@ -806,12 +825,53 @@ class TicketFrame(Frame):
 
         self.cinemas_tree.place(relx=0.5, rely=0)
 
-        buy_btn = ttk.Button(ticket, text='buy')
-        buy_btn.place(relx=0.275, rely=0.5, relwidth=0.2)
-        buy_btn.bind('<Button-1>', lambda event: self.buy_a_ticket())
+        lbl_customer_login = Label(ticket, text='Customer login')
+        self.entry_customer_login = ttk.Entry(ticket)
+
+        lbl_customer_login.place(relx=0.26, rely=0.12, relwidth=0.225)
+        self.entry_customer_login.place(relx=0.26, rely=0.15, relheight=spec_relh, relwidth=0.23)
+
+        lbl_film_name = Label(ticket, text='Film name')
+        self.entry_film_name = ttk.Entry(ticket)
+
+        lbl_film_name.place(relx=0.26, rely=0.2, relwidth=0.225)
+        self.entry_film_name.place(relx=0.26, rely=0.23, relheight=spec_relh, relwidth=0.23)
+
+        lbl_sch_time = Label(ticket, text='Scheduled time')
+        self.entry_sch_time = ttk.Entry(ticket)
+
+        lbl_sch_time.place(relx=0.26, rely=0.28, relwidth=0.225)
+        self.entry_sch_time.place(relx=0.26, rely=0.31, relheight=spec_relh, relwidth=0.23)
+
+        lbl_cinema_hall = Label(ticket, text='Cinema hall')
+        self.entry_cinema_hall = ttk.Entry(ticket)
+
+        lbl_cinema_hall.place(relx=0.26, rely=0.36, relwidth=0.225)
+        self.entry_cinema_hall.place(relx=0.26, rely=0.39, relheight=spec_relh, relwidth=0.23)
+
+        lbl_place_level = Label(ticket, text='Place level')
+        self.combo_place_level = ttk.Combobox(ticket)
+        self.combo_place_level['state'] = 'readonly'
+        self.combo_place_level['values'] = ['economy', 'comfort', 'vip']
+        self.combo_place_level.bind('<<ComboboxSelected>>', lambda event: self.combo_event())
+
+        lbl_place_level.place(relx=0.26, rely=0.44, relwidth=0.225)
+        self.combo_place_level.place(relx=0.26, rely=0.47, relheight=0.05, relwidth=0.23)
+
+        lbl_price = Label(ticket, text='Price')
+        self.entry_price = ttk.Entry(ticket, state=DISABLED)
+
+        lbl_price.place(relx=0.26, rely=0.52, relwidth=0.225)
+        self.entry_price.place(relx=0.26, rely=0.55, relheight=spec_relh, relwidth=0.23)
+
+        select_btn = ttk.Button(ticket, text='select', command=self.select_from_trees)
+        select_btn.place(relx=0.275, rely=0.63, relwidth=0.2)
+
+        buy_btn = ttk.Button(ticket, text='buy', state=DISABLED, command=lambda: self.buy_a_ticket())
+        buy_btn.place(relx=0.275, rely=0.68, relwidth=0.2)
 
         self.lbl_ticket_result = ttk.Label(ticket, text='')
-        self.lbl_ticket_result.place(relx=0.26, rely=0.55, relwidth=0.225)
+        self.lbl_ticket_result.place(relx=0.275, rely=0.73, relwidth=0.225)
 
         main_btn = ttk.Button(ticket, text='back to main page', command=self.open_cashier)
         main_btn.place(relx=0.275, rely=0.96, relwidth=0.2)
@@ -826,18 +886,63 @@ class TicketFrame(Frame):
         [self.cinemas_tree.delete(i) for i in self.cinemas_tree.get_children()]
         [self.cinemas_tree.insert('', 'end', values=row) for row in self.db.cur.fetchall()]
 
-    def buy_a_ticket(self):
+    def select_from_trees(self):
         try:
-            self.lbl_ticket_result.config(text='')
-            self.db.cur.execute('''SELECT * FROM customers WHERE id=?''',
-                                (self.customers_tree.set(self.customers_tree.selection()[0], '#1'),))
-            customer_row = self.db.cur.fetchone()
+            self.entry_customer_login.delete(0, END)
+            self.entry_film_name.delete(0, END)
+            self.entry_sch_time.delete(0, END)
+            self.entry_cinema_hall.delete(0, END)
+            self.combo_place_level.selection_clear()
+            self.entry_price.delete(0, END)
+            self.db.cur.execute('''SELECT customer_login from customers WHERE id=?''',
+                                (self.customers_tree.selection()[0], ))
+            customer_login_row = self.db.cur.fetchall()
+            print(customer_login_row)
             self.db.cur.execute('''SELECT * FROM cinemas WHERE id=?''',
-                                (self.cinemas_tree.set(self.cinemas_tree.selection()[0], '#1'),))
+                                (self.cinemas_tree.set(self.cinemas_tree.selection()[0], '#1'), ))
             cinema_row = self.db.cur.fetchone()
+            print(cinema_row)
+            self.entry_customer_login.insert(0, customer_login_row[1])
+            self.entry_film_name.insert(0, cinema_row[1])
+            self.entry_sch_time.insert(0, cinema_row[2])
+            self.entry_cinema_hall.insert(0, cinema_row[3])
+            if self.combo_place_level.get() == 'economy':
+                self.entry_price.delete(0, END)
+                self.entry_price.insert(0, eco_price)
+            elif self.combo_place_level.get() == 'comfort':
+                self.entry_price.delete(0, END)
+                self.entry_price.insert(0, comf_price)
+            elif self.combo_place_level.get() == 'vip':
+                self.entry_price.delete(0, END)
+                self.entry_price.insert(0, vip_price)
         except IndexError:
             self.lbl_ticket_result.config(text='You have not selected something')
-        # self.db.cur.execute('''INSERT INTO customers (customer_orders) VALUES (?) WHERE ID=?'''),
+
+    def combo_event(self):
+        if self.combo_place_level.get() == 'economy':
+            self.entry_price.delete(0, END)
+            self.entry_price.insert(0, eco_price)
+        elif self.combo_place_level.get() == 'comfort':
+            self.entry_price.delete(0, END)
+            self.entry_price.insert(0, comf_price)
+        elif self.combo_place_level.get() == 'vip':
+            self.entry_price.delete(0, END)
+            self.entry_price.insert(0, vip_price)
+    # def buy_a_ticket(self):
+    #     try:
+    #         if self.entry_customer_login.index('end') != 0 and self.entry_film_name.index('end') != 0 \
+    #                 and self.entry_sch_time.index('end') != 0 and self.entry_cinema_hall.index('end') != 0 \
+    #                 and self.combo_place_level.index('end') != 0 and self.entry_price.index('end') != 0:
+    #             self.lbl_ticket_result.config(text='')
+    #             self.db.cur.execute('''SELECT * FROM customers WHERE id=?''',
+    #                                 (self.customers_tree.set(self.customers_tree.selection()[0], '#1'),))
+    #             customer_row = self.db.cur.fetchone()
+    #             self.db.cur.execute('''SELECT * FROM cinemas WHERE id=?''',
+    #                                 (self.cinemas_tree.set(self.cinemas_tree.selection()[0], '#1'),))
+    #             cinema_row = self.db.cur.fetchone()
+    #     except IndexError:
+    #         self.lbl_ticket_result.config(text='You have not selected something')
+    #     # self.db.cur.execute('''INSERT INTO customers (customer_orders) VALUES (?) WHERE ID=?'''),
 
     @staticmethod
     def open_cashier():
@@ -878,6 +983,14 @@ class DB:
             film_name text, 
             scheduled_time text, 
             cinema_hall text)''')
+        self.cur.execute(
+            '''CREATE TABLE IF NOT EXISTS bills(
+            id integer primary key,
+            customer_login text,
+            film_name text, 
+            scheduled_time text, 
+            place_level text,
+            price text)''')
         self.con.commit()
 
     def insert_hall_data(self, hall_name, economy, comfort, vip):
@@ -902,6 +1015,10 @@ class DB:
                          (customer_login, customer_name, customer_surname, customer_age, customer_email))
         self.con.commit()
 
+    def insert_bill_data(self, customer_login, film_name, scheduled_time, place_level, cinema_cost):
+        self.cur.execute('''INSERT INTO bills (customer_login, film_name, scheduled_time, place_level, cinema_cost) VALUES (?, ?, ?, ?, ?)''',
+                         (customer_login, film_name, scheduled_time, place_level, cinema_cost))
+        self.con.commit()
 
 
 if __name__ == '__main__':

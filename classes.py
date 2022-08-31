@@ -32,14 +32,15 @@ class Worker:
 
 
 class Cinema:
-    def __init__(self, film_name, scheduled_time, cinema_hall):
+    def __init__(self, film_name, scheduled_time, cinema_hall, cinema_cost):
         self.__id = uuid4()
         self.__film_name = film_name
         self.__scheduled_time = scheduled_time
         self.__cinema_hall = cinema_hall
+        self.__cinema_cost = cinema_cost
 
     def __repr__(self):
-        res_str = f'{self.__film_name}, {self.__scheduled_time}, {self.__cinema_hall}'
+        res_str = f'{self.__film_name}, {self.__scheduled_time}, {self.__cinema_hall}, {self.__cinema_cost}'
         return res_str
 
     def get_name(self):
@@ -51,11 +52,38 @@ class Cinema:
     def get_time(self):
         return self.__scheduled_time
 
+    def get_cost(self):
+        return self.__cinema_cost
+
     def change_time(self, new_time):
         self.__scheduled_time = new_time
 
     def edit_hall(self, new_hall):
         self.__cinema_hall = new_hall
+
+
+class Bill:
+    def __init__(self, customer_login, film_name, scheduled_time, cinema_cost):
+        self.__customer_login = customer_login
+        self.__film_name = film_name
+        self.__scheduled_time = scheduled_time
+        self.__cinema_cost = cinema_cost
+
+    def __repr__(self):
+        res_str = f'{self.__customer_login}, {self.__film_name}, {self.__scheduled_time}, {self.__cinema_cost}'
+        return res_str
+
+    def get_hall(self):
+        return self.__customer_login
+
+    def get_name(self):
+        return self.__film_name
+
+    def get_time(self):
+        return self.__scheduled_time
+
+    def get_cost(self):
+        return self.__cinema_cost
 
 
 class Hall:

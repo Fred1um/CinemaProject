@@ -190,7 +190,6 @@
 #     customer_register.place(x=0, y=0)
 #     prev_frame = customer_register
 #
-#
 # def change_to_ticket_frame():
 #     global prev_frame
 #     if prev_frame != 0:
