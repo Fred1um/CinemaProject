@@ -63,27 +63,39 @@ class Cinema:
 
 
 class Bill:
-    def __init__(self, customer_login, film_name, scheduled_time, cinema_cost):
+    def __init__(self, customer_login, film_name, scheduled_time, place_level, cinema_price, quantity, total):
         self.__customer_login = customer_login
         self.__film_name = film_name
         self.__scheduled_time = scheduled_time
-        self.__cinema_cost = cinema_cost
+        self.__place_level = place_level
+        self.__cinema_price = cinema_price
+        self.__quantity = quantity
+        self.__total = total
 
     def __repr__(self):
-        res_str = f'{self.__customer_login}, {self.__film_name}, {self.__scheduled_time}, {self.__cinema_cost}'
+        res_str = f'{self.__customer_login}, {self.__film_name}, {self.__scheduled_time}, {self.__cinema_price}'
         return res_str
 
-    def get_hall(self):
+    def get_login(self):
         return self.__customer_login
 
-    def get_name(self):
+    def get_film_name(self):
         return self.__film_name
 
     def get_time(self):
         return self.__scheduled_time
 
-    def get_cost(self):
-        return self.__cinema_cost
+    def get_place_level(self):
+        return self.__place_level
+
+    def get_price(self):
+        return self.__cinema_price
+
+    def get_quantity(self):
+        return self.__quantity
+
+    def get_total(self):
+        return self.__total
 
 
 class Hall:
