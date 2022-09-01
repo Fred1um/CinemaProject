@@ -1,5 +1,4 @@
 from uuid import uuid4
-from tkntr import *
 
 
 class Worker:
@@ -32,12 +31,11 @@ class Worker:
 
 
 class Cinema:
-    def __init__(self, film_name, scheduled_time, cinema_hall, cinema_cost):
+    def __init__(self, film_name, scheduled_time, cinema_hall):
         self.__id = uuid4()
         self.__film_name = film_name
         self.__scheduled_time = scheduled_time
         self.__cinema_hall = cinema_hall
-        self.__cinema_cost = cinema_cost
 
     def __repr__(self):
         res_str = f'{self.__film_name}, {self.__scheduled_time}, {self.__cinema_hall}, {self.__cinema_cost}'
@@ -135,7 +133,8 @@ class Customer:
         self.__orders_obj_list = []
 
     def __repr__(self):
-        res_str = f'{self.__login}, {self.__name} {self.__surname}, {self.__age}, {self.__email}, {self.__orders_obj_list}'
+        res_str = f'{self.__login}, {self.__name} {self.__surname}, ' \
+                  f'{self.__age}, {self.__email}, {self.__orders_obj_list}'
         return res_str
 
     def get_login(self):

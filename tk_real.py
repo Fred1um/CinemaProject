@@ -2,7 +2,6 @@ import sqlite3
 from tkinter import *
 from tkinter import ttk
 from classes import *
-from time import strftime
 
 eco_price = '5'
 comf_price = '8'
@@ -13,7 +12,6 @@ lbl_relh = 0.04
 auth_worker_name = ''
 
 
-
 class Main(Frame):
     def __init__(self):
         super().__init__()
@@ -21,7 +19,7 @@ class Main(Frame):
         self.db = db
 
     def init_login(self):
-        login = Frame(width=800, height=800, bd=2)
+        login = ttk.Frame(width=800, height=800, style='Card.TFrame')
         login.place(x=0, y=0)
 
         lbl_user_login = Label(login, text='Login')
@@ -80,7 +78,7 @@ class AdminFrame(Frame):
         self.init_admin()
 
     def init_admin(self):
-        admin = Frame(width=800, height=800)
+        admin = ttk.Frame(width=800, height=800, style='Card.TFrame')
         admin.place(x=0, y=0)
 
         global auth_worker_name
@@ -97,7 +95,7 @@ class AdminFrame(Frame):
         worker_reg_btn.place(relx=0.5, rely=0.6, anchor=CENTER)
 
         log_out_btn = ttk.Button(admin, text='log out', command=self.log_out)
-        log_out_btn.place(relx=0, rely=0.96)
+        log_out_btn.place(relx=0, rely=0.958)
 
 
     @staticmethod
@@ -125,7 +123,7 @@ class HallFrame(Frame):
         self.view_halls()
 
     def init_hall(self):
-        hall = Frame(width=800, height=800)
+        hall = ttk.Frame(width=800, height=800, style='Card.TFrame')
         hall.place(x=0, y=0)
 
         lbl_hall_name = Label(hall, text='Hall name')
@@ -164,15 +162,15 @@ class HallFrame(Frame):
 
         self.hall_search_img = PhotoImage(file='icons/search.png')
         hall_search = ttk.Button(hall, image=self.hall_search_img, command=self.open_search_hall)
-        hall_search.place(relx=0.92, rely=0.6, width=55, height=55)
+        hall_search.place(relx=0.89, rely=0.64, width=55, height=55)
 
         self.cinema_refresh = PhotoImage(file='icons/refresh.png')
         hall_refresh = ttk.Button(hall, image=self.cinema_refresh, command=self.view_halls)
-        hall_refresh.place(relx=0.92, rely=0.7, width=55, height=55)
+        hall_refresh.place(relx=0.89, rely=0.74, width=55, height=55)
 
         self.delete_hall_img = PhotoImage(file='icons/delete.png')
         delete_hall_btn = ttk.Button(hall, image=self.delete_hall_img, command=self.delete_records)
-        delete_hall_btn.place(relx=0.92, rely=0.8, width=55, height=55)
+        delete_hall_btn.place(relx=0.89, rely=0.84, width=55, height=55)
 
         self.tree = ttk.Treeview(hall, height=10, columns=('ID', 'hall_name', 'economy', 'comfort', 'vip'),
                                  show='headings')
@@ -192,11 +190,11 @@ class HallFrame(Frame):
         self.tree.place(relx=0.15, rely=0.6)
 
         self.scroll = ttk.Scrollbar(hall, command=self.tree.yview)
-        self.scroll.place(relx=0.85, rely=0.75, relheight=0.3, anchor=E)
+        self.scroll.place(relx=0.88, rely=0.77, relheight=0.33, anchor=E)
         self.tree.configure(yscrollcommand=self.scroll.set)
 
         main_btn = ttk.Button(hall, text='back to main page', command=self.open_admin)
-        main_btn.place(relx=0, rely=0.96)
+        main_btn.place(relx=0, rely=0.958)
 
     def hall_record(self, hall_name, economy, comfort, vip):
         if self.entry_hall_name.index('end') != 0 and self.entry_eco.index('end') != 0 and \
@@ -286,7 +284,7 @@ class CinemaFrame(Frame):
         self.view_cinemas()
 
     def init_cinema(self):
-        cinema_frame = Frame(width=800, height=800)
+        cinema_frame = ttk.Frame(width=800, height=800, style='Card.TFrame')
         cinema_frame.place(x=0, y=0)
 
         lbl_film_name = Label(cinema_frame, text='Film name')
@@ -323,19 +321,19 @@ class CinemaFrame(Frame):
 
         self.cinema_search_img = PhotoImage(file='icons/search.png')
         cinema_search = ttk.Button(cinema_frame, image=self.cinema_search_img, command=self.open_search_cinema)
-        cinema_search.place(relx=0.92, rely=0.5, width=55, height=55)
+        cinema_search.place(relx=0.91, rely=0.65, width=55, height=55)
 
         self.cinema_refresh_img = PhotoImage(file='icons/refresh.png')
         cinema_refresh = ttk.Button(cinema_frame, image=self.cinema_refresh_img, command=self.view_cinemas)
-        cinema_refresh.place(relx=0.92, rely=0.6, width=55, height=55)
+        cinema_refresh.place(relx=0.91, rely=0.74, width=55, height=55)
 
         self.cinema_edit_img = PhotoImage(file='icons/clock_update.png')
         cinema_edit_btn = ttk.Button(cinema_frame, image=self.cinema_edit_img, command=self.default_data)
-        cinema_edit_btn.place(relx=0.92, rely=0.725,  width=55, height=55)
+        cinema_edit_btn.place(relx=0.91, rely=0.83,  width=55, height=55)
 
         self.delete_cinema_img = PhotoImage(file='icons/delete.png')
         delete_cinema_btn = ttk.Button(cinema_frame, image=self.delete_cinema_img, command=self.delete_records)
-        delete_cinema_btn.place(relx=0.92, rely=0.8, width=55, height=55)
+        delete_cinema_btn.place(relx=0.91, rely=0.92, width=55, height=55)
 
         self.tree = ttk.Treeview(cinema_frame, height=10, columns=('ID', 'film_name', 'scheduled_time', 'cinema_hall'),
                                  show='headings')
@@ -353,11 +351,11 @@ class CinemaFrame(Frame):
         self.tree.place(relx=0.175, rely=0.65)
 
         self.scroll = ttk.Scrollbar(cinema_frame, command=self.tree.yview)
-        self.scroll.place(relx=0.87, rely=0.79, relheight=0.3, anchor=E)
+        self.scroll.place(relx=0.9, rely=0.82, relheight=0.33, anchor=E)
         self.tree.configure(yscrollcommand=self.scroll.set)
 
         main_btn = ttk.Button(cinema_frame, text='back to main page', command=self.open_admin)
-        main_btn.place(relx=0, rely=0.96)
+        main_btn.place(relx=0, rely=0.958)
 
     def cinema_record(self, film_name, scheduled_time, cinema_hall):
         if self.entry_film_name.index('end') != 0 and self.entry_sch_time.index('end') != 0 and \
@@ -480,7 +478,7 @@ class WorkerFrame(Frame):
         self.view_workers()
 
     def init_worker(self):
-        worker = Frame(width=800, height=800)
+        worker = ttk.Frame(width=800, height=800, style='Card.TFrame')
         worker.place(x=0, y=0)
 
         lbl_worker_name = Label(worker, text='Name')
@@ -515,15 +513,15 @@ class WorkerFrame(Frame):
 
         self.worker_search_img = PhotoImage(file='icons/search.png')
         worker_search = ttk.Button(worker, image=self.worker_search_img, command=self.open_search_worker)
-        worker_search.place(relx=0.85, rely=0.65, width=55, height=55)
+        worker_search.place(relx=0.91, rely=0.68, width=55, height=55)
 
         self.worker_refresh_img = PhotoImage(file='icons/refresh.png')
         worker_refresh = ttk.Button(worker, image=self.worker_refresh_img, command=self.view_workers)
-        worker_refresh.place(relx=0.85, rely=0.75, width=55, height=55)
+        worker_refresh.place(relx=0.91, rely=0.78, width=55, height=55)
 
         self.worker_delete_img = PhotoImage(file='icons/delete.png')
         delete_worker_btn = ttk.Button(worker, image=self.worker_delete_img, command=self.delete_records)
-        delete_worker_btn.place(relx=0.85, rely=0.85, width=55, height=55)
+        delete_worker_btn.place(relx=0.91, rely=0.88, width=55, height=55)
 
         self.tree = ttk.Treeview(worker, height=10, columns=('ID', 'worker_name', 'worker_surname', 'worker_login',
                                  'worker_pass', 'worker_title'),
@@ -546,7 +544,7 @@ class WorkerFrame(Frame):
         self.tree.place(relx=0.042, rely=0.65)
 
         self.scroll = ttk.Scrollbar(worker, command=self.tree.yview)
-        self.scroll.place(relx=0.85, rely=0.79, relheight=0.28, anchor=E)
+        self.scroll.place(relx=0.9, rely=0.82, relheight=0.33, anchor=E)
         self.tree.configure(yscrollcommand=self.scroll.set)
 
         save_worker_btn = ttk.Button(worker, text='save')
@@ -561,7 +559,7 @@ class WorkerFrame(Frame):
         self.lbl_worker_result.place(relx=0.25, rely=0.55, relwidth=0.5)
 
         main_btn = ttk.Button(worker, text='back to main page', command=self.open_admin)
-        main_btn.place(relx=0, rely=0.96)
+        main_btn.place(relx=0, rely=0.958)
 
     def worker_record(self, worker_name, worker_surname, worker_login, worker_pass, worker_title):
         if self.entry_worker_name.index('end') != 0 and self.entry_worker_surname.index('end') != 0 and \
@@ -651,7 +649,7 @@ class CashierFrame(Frame):
         self.init_cashier()
 
     def init_cashier(self):
-        cashier = Frame(width=800, height=800)
+        cashier = ttk.Frame(width=800, height=800, style='Card.TFrame')
         cashier.place(x=0, y=0)
 
         global auth_worker_name
@@ -688,41 +686,41 @@ class CustomerFrame(Frame):
         self.view_customers()
 
     def init_customer(self):
-        customer = Frame(width=800, height=800)
+        customer = ttk.Frame(width=800, height=800, style='Card.TFrame')
         customer.place(x=0, y=0)
 
         lbl_login = Label(customer, text='Login')
         self.entry_login = ttk.Entry(customer)
 
-        lbl_login.place(relx=0.35, rely=0.09, relheight=lbl_relh, relwidth=spec_relw)
-        self.entry_login.place(relx=0.35, rely=0.13, relheight=spec_relh, relwidth=spec_relw)
+        lbl_login.place(relx=0.35, rely=0.04, relheight=lbl_relh, relwidth=spec_relw)
+        self.entry_login.place(relx=0.35, rely=0.08, relheight=spec_relh, relwidth=spec_relw)
 
         lbl_name = Label(customer, text='Name')
         self.entry_name = ttk.Entry(customer)
 
-        lbl_name.place(relx=0.35, rely=0.18, relheight=lbl_relh, relwidth=spec_relw)
-        self.entry_name.place(relx=0.35, rely=0.22, relheight=spec_relh, relwidth=spec_relw)
+        lbl_name.place(relx=0.35, rely=0.13, relheight=lbl_relh, relwidth=spec_relw)
+        self.entry_name.place(relx=0.35, rely=0.17, relheight=spec_relh, relwidth=spec_relw)
 
         lbl_surname = Label(customer, text='Surname')
         self.entry_surname = ttk.Entry(customer)
 
-        lbl_surname.place(relx=0.35, rely=0.27, relheight=lbl_relh, relwidth=spec_relw)
-        self.entry_surname.place(relx=0.35, rely=0.31, relheight=spec_relh, relwidth=spec_relw)
+        lbl_surname.place(relx=0.35, rely=0.22, relheight=lbl_relh, relwidth=spec_relw)
+        self.entry_surname.place(relx=0.35, rely=0.26, relheight=spec_relh, relwidth=spec_relw)
 
         lbl_age = Label(customer, text='Age')
         self.entry_age = ttk.Entry(customer)
 
-        lbl_age.place(relx=0.35, rely=0.36, relheight=lbl_relh, relwidth=spec_relw)
-        self.entry_age.place(relx=0.35, rely=0.4, relheight=spec_relh, relwidth=spec_relw)
+        lbl_age.place(relx=0.35, rely=0.31, relheight=lbl_relh, relwidth=spec_relw)
+        self.entry_age.place(relx=0.35, rely=0.35, relheight=spec_relh, relwidth=spec_relw)
 
         lbl_email = Label(customer, text='Email')
         self.entry_email = ttk.Entry(customer)
 
-        lbl_email.place(relx=0.35, rely=0.45, relheight=lbl_relh, relwidth=spec_relw)
-        self.entry_email.place(relx=0.35, rely=0.49, relheight=spec_relh, relwidth=spec_relw)
+        lbl_email.place(relx=0.35, rely=0.4, relheight=lbl_relh, relwidth=spec_relw)
+        self.entry_email.place(relx=0.35, rely=0.44, relheight=spec_relh, relwidth=spec_relw)
 
         save_cust_btn = ttk.Button(customer, text='save')
-        save_cust_btn.place(relx=0.35, rely=0.58, relwidth=spec_relw)
+        save_cust_btn.place(relx=0.35, rely=0.53, relwidth=spec_relw)
         save_cust_btn.bind('<Button-1>', lambda event: self.customer_record(self.entry_login.get(),
                                                                             self.entry_name.get(),
                                                                             self.entry_surname.get(),
@@ -730,7 +728,7 @@ class CustomerFrame(Frame):
                                                                             self.entry_email.get()))
 
         self.lbl_cust_result = Label(customer, text='')
-        self.lbl_cust_result.place(relx=0.25, rely=0.55, relwidth=0.5)
+        self.lbl_cust_result.place(relx=0.25, rely=0.49, relwidth=0.5)
 
         self.tree = ttk.Treeview(customer, height=10, columns=('ID', 'customer_login', 'customer_name',
                                                                'customer_surname', 'customer_age', 'customer_email',
@@ -740,10 +738,10 @@ class CustomerFrame(Frame):
         self.tree.column('ID', width=30, anchor=CENTER)
         self.tree.column('customer_login', width=100, anchor=CENTER)
         self.tree.column('customer_name', width=100, anchor=CENTER)
-        self.tree.column('customer_surname', width=100, anchor=CENTER)
-        self.tree.column('customer_age', width=50, anchor=CENTER)
-        self.tree.column('customer_email', width=250, anchor=CENTER)
-        self.tree.column('customer_orders', width=150, anchor=CENTER)
+        self.tree.column('customer_surname', width=115, anchor=CENTER)
+        self.tree.column('customer_age', width=85, anchor=CENTER)
+        self.tree.column('customer_email', width=175, anchor=CENTER)
+        self.tree.column('customer_orders', width=175, anchor=CENTER)
 
         self.tree.heading('ID', text='ID')
         self.tree.heading('customer_name', text='Customer name')
@@ -753,10 +751,10 @@ class CustomerFrame(Frame):
         self.tree.heading('customer_email', text='Customer email')
         self.tree.heading('customer_orders', text='Customer orders')
 
-        self.tree.place(relx=0, rely=0.65)
+        self.tree.place(relx=0, rely=0.6)
 
         scroll = ttk.Scrollbar(customer, command=self.tree.yview)
-        scroll.place(relx=0.995, rely=0.795, relheight=0.3, anchor=E)
+        scroll.place(relx=0.99999, rely=0.77, relheight=0.33, anchor=E)
         self.tree.configure(yscrollcommand=scroll.set)
 
         main_btn = ttk.Button(customer, text='back to main page', command=self.open_cashier)
@@ -801,31 +799,31 @@ class TicketFrame(Frame):
         self.view_cinemas()
 
     def init_ticket(self):
-        ticket = Frame(width=800, height=800)
+        ticket = ttk.Frame(width=800, height=800, style='Card.TFrame')
         ticket.place(x=0, y=0)
 
-        self.customers_tree = ttk.Treeview(ticket, height=800, columns='customer_login', show='headings')
+        self.customers_tree = ttk.Treeview(ticket, height=720, columns='customer_login', show='headings')
 
-        self.customers_tree.column('customer_login', width=200, anchor=CENTER)
+        self.customers_tree.column('customer_login', width=150, anchor=CENTER)
 
         self.customers_tree.heading('customer_login', text='Customer login')
 
-        self.customers_tree.place(relx=0, rely=0)
+        self.customers_tree.place(relx=0, rely=0, relheight=0.998)
 
-        self.cinemas_tree = ttk.Treeview(ticket, height=800, columns=('id', 'film_name', 'scheduled_time', 'cinema_hall'),
+        self.cinemas_tree = ttk.Treeview(ticket, height=720, columns=('id', 'film_name', 'scheduled_time', 'cinema_hall'),
                                          show='headings')
 
-        self.cinemas_tree.column('id', width=50, anchor=CENTER)
-        self.cinemas_tree.column('film_name', width=200, anchor=CENTER)
-        self.cinemas_tree.column('scheduled_time', width=50, anchor=CENTER)
-        self.cinemas_tree.column('cinema_hall', width=100, anchor=CENTER)
+        self.cinemas_tree.column('id', width=40, anchor=CENTER)
+        self.cinemas_tree.column('film_name', width=175, anchor=CENTER)
+        self.cinemas_tree.column('scheduled_time', width=40, anchor=CENTER)
+        self.cinemas_tree.column('cinema_hall', width=95, anchor=CENTER)
 
         self.cinemas_tree.heading('id', text='id')
         self.cinemas_tree.heading('film_name', text='Film name')
         self.cinemas_tree.heading('scheduled_time', text='Scheduled time')
         self.cinemas_tree.heading('cinema_hall', text='Cinema hall')
 
-        self.cinemas_tree.place(relx=0.5, rely=0)
+        self.cinemas_tree.place(relx=0.5, rely=0, relheight=0.998)
 
         self.lbl_customer_login = Label(ticket, text='Customer login')
         self.entry_customer_login = ttk.Entry(ticket)
@@ -868,32 +866,31 @@ class TicketFrame(Frame):
         lbl_quantity = Label(ticket, text='Quantity')
         self.entry_quantity = ttk.Entry(ticket)
 
-        lbl_quantity.place(relx=0.26, rely=0.57, relwidth=0.225)
-        self.entry_quantity.place(relx=0.26, rely=0.6, relheight=spec_relh, relwidth=0.23)
+        lbl_quantity.place(relx=0.26, rely=0.54, relwidth=0.225)
+        self.entry_quantity.place(relx=0.26, rely=0.57, relheight=spec_relh, relwidth=0.23)
 
         lbl_total = Label(ticket, text='Total')
         self.total_stringvar = StringVar()
         self.entry_total = ttk.Entry(ticket, state=DISABLED, textvariable=self.total_stringvar)
 
-        lbl_total.place(relx=0.26, rely=0.65, relwidth=0.225)
-        self.entry_total.place(relx=0.26, rely=0.68, relheight=spec_relh, relwidth=0.23)
+        lbl_total.place(relx=0.26, rely=0.62, relwidth=0.225)
+        self.entry_total.place(relx=0.26, rely=0.65, relheight=spec_relh, relwidth=0.23)
 
         self.select_for_cust_btn = ttk.Button(ticket, text='select', command=lambda: self.select_from_trees_for_cust())
-        self.select_for_cust_btn.place(relx=0.275, rely=0.79, relwidth=0.2)
+        self.select_for_cust_btn.place(relx=0.275, rely=0.75, relwidth=0.2)
 
         self.select_for_guest_btn = ttk.Button(ticket, text='select', command=lambda: self.select_from_trees_for_guest())
 
         self.buy_as_cust_btn = ttk.Button(ticket, text='buy', state=DISABLED, command=lambda: self.buy_a_ticket_as_cust())
-        self.buy_as_cust_btn.place(relx=0.275, rely=0.84, relwidth=0.2)
+        self.buy_as_cust_btn.place(relx=0.275, rely=0.8, relwidth=0.2)
 
         self.buy_as_guest_btn = ttk.Button(ticket, text='buy', state=DISABLED, command=lambda: self.buy_a_ticket_as_guest())
 
-
         self.lbl_ticket_result = ttk.Label(ticket, text='')
-        self.lbl_ticket_result.place(relx=0.275, rely=0.89, relwidth=0.225)
+        self.lbl_ticket_result.place(relx=0.275, rely=0.85, relwidth=0.225)
 
         self.as_guest_btn = ttk.Button(ticket, text='switch to guest', command=lambda: self.switch_to_guest())
-        self.as_guest_btn.place(relx=0.275, rely=0.92, relwidth=0.2)
+        self.as_guest_btn.place(relx=0.275, rely=0.909, relwidth=0.2)
 
         self.as_cust_btn = ttk.Button(ticket, text='switch to customer', command=lambda: self.switch_to_customer())
 
@@ -901,7 +898,7 @@ class TicketFrame(Frame):
         self.reset_entries_btn.place(relx=0.275, rely=0.01, relwidth=0.2)
 
         main_btn = ttk.Button(ticket, text='back to main page', command=self.open_cashier)
-        main_btn.place(relx=0.275, rely=0.97, relwidth=0.2)
+        main_btn.place(relx=0.275, rely=0.959, relwidth=0.2)
 
     def view_customers(self):
         self.db.cur.execute('''SELECT customer_login FROM customers''')
@@ -981,9 +978,9 @@ class TicketFrame(Frame):
         self.customers_tree.place_forget()
         self.as_guest_btn.place_forget()
         self.buy_as_cust_btn.place_forget()
-        self.as_cust_btn.place(relx=0.275, rely=0.92, relwidth=0.2)
-        self.select_for_guest_btn.place(relx=0.275, rely=0.79, relwidth=0.2)
-        self.buy_as_guest_btn.place(relx=0.275, rely=0.84, relwidth=0.2)
+        self.as_cust_btn.place(relx=0.275, rely=0.909, relwidth=0.2)
+        self.select_for_guest_btn.place(relx=0.275, rely=0.75, relwidth=0.2)
+        self.buy_as_guest_btn.place(relx=0.275, rely=0.8, relwidth=0.2)
         self.buy_as_guest_btn['state'] = 'disabled'
         self.combo_place_level.set('')
 
@@ -993,9 +990,9 @@ class TicketFrame(Frame):
         self.customers_tree.place(relx=0, rely=0)
         self.as_cust_btn.place_forget()
         self.buy_as_guest_btn.place_forget()
-        self.as_guest_btn.place(relx=0.275, rely=0.92, relwidth=0.2)
-        self.select_for_cust_btn.place(relx=0.275, rely=0.79, relwidth=0.2)
-        self.buy_as_cust_btn.place(relx=0.275, rely=0.84, relwidth=0.2)
+        self.as_guest_btn.place(relx=0.275, rely=0.909, relwidth=0.2)
+        self.select_for_cust_btn.place(relx=0.275, rely=0.75, relwidth=0.2)
+        self.buy_as_cust_btn.place(relx=0.275, rely=0.8, relwidth=0.2)
         self.buy_as_cust_btn['state'] = 'disabled'
         self.combo_place_level.set('')
 
@@ -1004,6 +1001,7 @@ class TicketFrame(Frame):
         self.entry_film_name.delete(0, END)
         self.entry_sch_time.delete(0, END)
         self.entry_cinema_hall.delete(0, END)
+        self.lbl_ticket_result.config(text='')
         self.combo_place_level.set('')
         self.entry_price['state'] = 'normal'
         self.entry_price.delete(0, END)
@@ -1122,6 +1120,8 @@ class DB:
 
 if __name__ == '__main__':
     win = Tk()
+    win.call('source', 'azure.tcl')
+    win.call('set_theme', 'dark')
     db = DB()
     app = Main()
     app.pack()
