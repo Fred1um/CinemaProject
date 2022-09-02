@@ -38,7 +38,7 @@ class Cinema:
         self.__cinema_hall = cinema_hall
 
     def __repr__(self):
-        res_str = f'{self.__film_name}, {self.__scheduled_time}, {self.__cinema_hall}, {self.__cinema_cost}'
+        res_str = f'{self.__film_name}, {self.__scheduled_time}, {self.__cinema_hall}'
         return res_str
 
     def get_name(self):
@@ -49,9 +49,6 @@ class Cinema:
 
     def get_time(self):
         return self.__scheduled_time
-
-    def get_cost(self):
-        return self.__cinema_cost
 
     def change_time(self, new_time):
         self.__scheduled_time = new_time

@@ -40,7 +40,6 @@ class Main(Frame):
         self.lbl_signin_result = Label(login, text='')
         self.lbl_signin_result.place(relx=0.35, rely=0.62, relheight=lbl_relh, relwidth=spec_relw)
 
-
     def login(self):
         login1 = self.entry_user_login.get()
         password = self.entry_user_password.get()
@@ -96,7 +95,6 @@ class AdminFrame(Frame):
 
         log_out_btn = ttk.Button(admin, text='log out', command=self.log_out)
         log_out_btn.place(relx=0, rely=0.958)
-
 
     @staticmethod
     def open_hall():
@@ -265,10 +263,10 @@ class SearchHall(Toplevel):
         self.entry_search.place(relx=0.35, rely=0.2, relwidth=0.5)
 
         btn_cancel = ttk.Button(self, text='Close', command=self.destroy)
-        btn_cancel.place(relx=0.61, rely=0.5)
+        btn_cancel.place(relx=0.61, rely=0.6)
 
         btn_search = ttk.Button(self, text='Search')
-        btn_search.place(relx=0.28, rely=0.5)
+        btn_search.place(relx=0.28, rely=0.6)
         btn_search.bind('<Button-1>', lambda event: self.hall.search_halls(self.entry_search.get()))
         btn_search.bind('<Button-1>', lambda event: self.destroy(), add='+')
 
@@ -459,10 +457,10 @@ class SearchCinema(Toplevel):
         self.entry_search.place(relx=0.35, rely=0.2, relwidth=0.5)
 
         btn_cancel = ttk.Button(self, text='Close', command=self.destroy)
-        btn_cancel.place(relx=0.61, rely=0.5)
+        btn_cancel.place(relx=0.61, rely=0.6)
 
         btn_search = ttk.Button(self, text='Search')
-        btn_search.place(relx=0.28, rely=0.5)
+        btn_search.place(relx=0.28, rely=0.6)
         btn_search.bind('<Button-1>', lambda event: self.cinema.search_records(self.entry_search.get()))
         btn_search.bind('<Button-1>', lambda event: self.destroy(), add='+')
 
@@ -632,10 +630,10 @@ class SearchWorker(Toplevel):
         self.entry_search.place(relx=0.35, rely=0.2, relwidth=0.5)
 
         btn_cancel = ttk.Button(self, text='Close', command=self.destroy)
-        btn_cancel.place(relx=0.61, rely=0.5)
+        btn_cancel.place(relx=0.61, rely=0.6)
 
         btn_search = ttk.Button(self, text='Search')
-        btn_search.place(relx=0.28, rely=0.5)
+        btn_search.place(relx=0.28, rely=0.6)
         btn_search.bind('<Button-1>', lambda event: self.worker.search_halls(self.entry_search.get()))
         btn_search.bind('<Button-1>', lambda event: self.destroy(), add='+')
 
@@ -1124,7 +1122,7 @@ if __name__ == '__main__':
     win.call('set_theme', 'dark')
     db = DB()
     app = Main()
-    app.pack()
+    app.place()
     win.title('Cinema Project')
     width_window = 800
     height_window = 800
