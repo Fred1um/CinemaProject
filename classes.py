@@ -127,11 +127,10 @@ class Customer:
         self.__surname = surname
         self.__age = age
         self.__email = email
-        self.__orders_obj_list = []
 
     def __repr__(self):
         res_str = f'{self.__login}, {self.__name} {self.__surname}, ' \
-                  f'{self.__age}, {self.__email}, {self.__orders_obj_list}'
+                  f'{self.__age}, {self.__email}'
         return res_str
 
     def get_login(self):

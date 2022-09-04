@@ -818,29 +818,52 @@ class CustomerFrame(Frame):
         lbl_email.place(relx=0.35, rely=0.4, relheight=lbl_relh, relwidth=spec_relw)
         self.entry_email.place(relx=0.35, rely=0.44, relheight=spec_relh, relwidth=spec_relw)
 
-        save_cust_btn = ttk.Button(customer, text='save')
-        save_cust_btn.place(relx=0.35, rely=0.53, relwidth=spec_relw)
-        save_cust_btn.bind('<Button-1>', lambda event: self.customer_record(self.entry_login.get(),
+        self.save_cust_btn = ttk.Button(customer, text='save')
+        self.save_cust_btn.place(relx=0.35, rely=0.53, relwidth=spec_relw)
+        self.save_cust_btn.bind('<Button-1>', lambda event: self.customer_record(self.entry_login.get(),
                                                                             self.entry_name.get(),
                                                                             self.entry_surname.get(),
                                                                             self.entry_age.get(),
                                                                             self.entry_email.get()))
 
+        self.save_edited_info = ttk.Button(customer, text='edit')
+        self.save_edited_info.bind('<Button-1>', lambda event: self.edit_record(self.entry_login.get(),
+                                                                                self.entry_name.get(),
+                                                                                self.entry_surname.get(),
+                                                                                self.entry_age.get(),
+                                                                                self.entry_email.get()))
+
+
+
+        self.customer_search_img = PhotoImage(file='icons/search.png')
+        customer_search = ttk.Button(customer, image=self.customer_search_img, command=self.open_search_customer)
+        customer_search.place(relx=0.91, rely=0.6, width=55, height=55)
+
+        self.customer_refresh_img = PhotoImage(file='icons/refresh.png')
+        customer_refresh = ttk.Button(customer, image=self.customer_refresh_img, command=self.view_customers)
+        customer_refresh.place(relx=0.91, rely=0.69, width=55, height=55)
+
+        self.customer_edit_img = PhotoImage(file='icons/clock_update.png')
+        customer_edit_btn = ttk.Button(customer, image=self.customer_edit_img, command=self.default_data)
+        customer_edit_btn.place(relx=0.91, rely=0.78, width=55, height=55)
+
+        self.customer_delete_img = PhotoImage(file='icons/delete.png')
+        delete_customer_btn = ttk.Button(customer, image=self.customer_delete_img, command=self.delete_records)
+        delete_customer_btn.place(relx=0.91, rely=0.87, width=55, height=55)
+
         self.lbl_cust_result = Label(customer, text='')
         self.lbl_cust_result.place(relx=0.25, rely=0.49, relwidth=0.5)
 
         self.tree = ttk.Treeview(customer, height=10, columns=('ID', 'customer_login', 'customer_name',
-                                                               'customer_surname', 'customer_age', 'customer_email',
-                                                               'customer_orders'),
+                                                               'customer_surname', 'customer_age', 'customer_email'),
                                  show='headings')
 
         self.tree.column('ID', width=30, anchor=CENTER)
-        self.tree.column('customer_login', width=100, anchor=CENTER)
-        self.tree.column('customer_name', width=100, anchor=CENTER)
-        self.tree.column('customer_surname', width=115, anchor=CENTER)
-        self.tree.column('customer_age', width=85, anchor=CENTER)
-        self.tree.column('customer_email', width=175, anchor=CENTER)
-        self.tree.column('customer_orders', width=175, anchor=CENTER)
+        self.tree.column('customer_login', width=110, anchor=CENTER)
+        self.tree.column('customer_name', width=110, anchor=CENTER)
+        self.tree.column('customer_surname', width=110, anchor=CENTER)
+        self.tree.column('customer_age', width=100, anchor=CENTER)
+        self.tree.column('customer_email', width=170, anchor=CENTER)
 
         self.tree.heading('ID', text='ID')
         self.tree.heading('customer_name', text='Customer name')
@@ -848,12 +871,11 @@ class CustomerFrame(Frame):
         self.tree.heading('customer_login', text='Customer login')
         self.tree.heading('customer_age', text='Customer age')
         self.tree.heading('customer_email', text='Customer email')
-        self.tree.heading('customer_orders', text='Customer orders')
 
-        self.tree.place(relx=0, rely=0.6)
+        self.tree.place(relx=0.042, rely=0.6)
 
         scroll = ttk.Scrollbar(customer, command=self.tree.yview)
-        scroll.place(relx=0.99999, rely=0.77, relheight=0.33, anchor=E)
+        scroll.place(relx=0.9, rely=0.77, relheight=0.33, anchor=E)
         self.tree.configure(yscrollcommand=scroll.set)
 
         main_btn = ttk.Button(customer, text='back to main page', command=self.open_cashier)
@@ -884,9 +906,99 @@ class CustomerFrame(Frame):
         [self.tree.delete(i) for i in self.tree.get_children()]
         [self.tree.insert('', 'end', values=row) for row in self.db.cur.fetchall()]
 
+    def delete_records(self):
+        for selection_item in self.tree.selection():
+            self.db.cur.execute('''DELETE FROM customers WHERE id=?''', (self.tree.set(selection_item, '#1'),))
+        self.db.con.commit()
+        self.view_customers()
+
+    def search_customers(self, customer_login):
+        customer_login = ('%' + customer_login + '%', )
+        self.db.cur.execute('''SELECT * FROM customers WHERE customer_login LIKE ?''', customer_login)
+        [self.tree.delete(i) for i in self.tree.get_children()]
+        [self.tree.insert('', 'end', values=row) for row in self.db.cur.fetchall()]
+
+    def default_data(self):
+        try:
+            self.entry_login.delete(0, END)
+            self.entry_name.delete(0, END)
+            self.entry_surname.delete(0, END)
+            self.entry_age.delete(0, END)
+            self.entry_email.delete(0, END)
+            self.db.cur.execute('''SELECT * FROM customers WHERE id=?''',
+                                (self.tree.set(self.tree.selection()[0], '#1'), ))
+            row = self.db.cur.fetchone()
+            self.entry_login.insert(0, row[1])
+            self.entry_name.insert(0, row[2])
+            self.entry_surname.insert(0, row[3])
+            self.entry_age.insert(0, row[4])
+            self.entry_email.insert(0, row[5])
+            self.save_cust_btn.place_forget()
+            self.save_edited_info.place(relx=0.35, rely=0.53, relwidth=spec_relw)
+        except IndexError:
+            self.lbl_cust_result.config(text='You have not selected the customer')
+
+    def edit_record(self, customer_login, customer_name, customer_surname, customer_age, customer_email):
+        if self.entry_login.index('end') != 0 and self.entry_name.index('end') != 0 and \
+                self.entry_surname.index('end') != 0 and self.entry_age.index('end') != 0\
+                and self.entry_email.index('end') != 0:
+            self.db.cur.execute('''UPDATE customers SET customer_login=?, customer_name=?, customer_surname=?, customer_age=?, customer_email=? WHERE ID=?''',
+                                (customer_login, customer_name, customer_surname, customer_age, customer_email,
+                                 self.tree.set(self.tree.selection()[0], '#1')))
+            self.db.con.commit()
+            self.entry_login.delete(0, END)
+            self.entry_name.delete(0, END)
+            self.entry_surname.delete(0, END)
+            self.entry_age.delete(0, END)
+            self.entry_email.delete(0, END)
+            self.view_customers()
+            self.save_edited_info.place_forget()
+            self.save_cust_btn.place(relx=0.35, rely=0.53, relwidth=spec_relw)
+        else:
+            self.lbl_cust_result.config(text='Some info is not given, check out all empty entries')
+
+    @staticmethod
+    def open_search_customer():
+        SearchCustomer()
+
     @staticmethod
     def open_cashier():
         CashierFrame()
+
+
+class SearchCustomer(Toplevel):
+    def __init__(self):
+        super().__init__()
+        self.init_search_customer()
+        self.customer = CustomerFrame()
+
+    def init_search_customer(self):
+        self.title('Search')
+        self.width_window = 300
+        self.height_window = 100
+        self.width_screen = win.winfo_screenwidth()
+        self.height_screen = win.winfo_screenheight()
+        self.x_center = int(self.width_screen / 2 - self.width_window / 2)
+        self.y_center = int(self.height_screen / 2 - self.height_window / 2)
+        self.geometry(f'{self.width_window}x{self.height_window}+{self.x_center}+{self.y_center}')
+        self.resizable(False, False)
+
+        label_search = Label(self, text='Search')
+        label_search.place(relx=0.166, rely=0.2)
+
+        self.entry_search = ttk.Entry(self)
+        self.entry_search.place(relx=0.35, rely=0.2, relwidth=0.5)
+
+        btn_cancel = ttk.Button(self, text='Close', command=self.destroy)
+        btn_cancel.place(relx=0.61, rely=0.6)
+
+        btn_search = ttk.Button(self, text='Search')
+        btn_search.place(relx=0.28, rely=0.6)
+        btn_search.bind('<Button-1>', lambda event: self.customer.search_customers(self.entry_search.get()))
+        btn_search.bind('<Button-1>', lambda event: self.destroy(), add='+')
+
+        self.grab_set()
+        self.focus_set()
 
 
 class TicketFrame(Frame):
@@ -1293,8 +1405,7 @@ class DB:
             customer_name text, 
             customer_surname text, 
             customer_age text,
-            customer_email text,
-            customer_orders text)''')
+            customer_email text)''')
         self.cur.execute(
             '''CREATE TABLE IF NOT EXISTS halls(
             id integer primary key, 
@@ -1308,9 +1419,9 @@ class DB:
             film_name text, 
             scheduled_time text, 
             cinema_hall text,
-            economy text,
-            comfort text,
-            vip text)''')
+            economy integer,
+            comfort integer,
+            vip integer)''')
         self.cur.execute(
             '''CREATE TABLE IF NOT EXISTS bills(
             id integer primary key,
@@ -1362,8 +1473,7 @@ if __name__ == '__main__':
     win.call('set_theme', 'dark')
     db = DB()
     app = Main()
-    app.place()
-    win.title('Cinema Project')
+    win.title('Cinema Theatre')
     width_window = 800
     height_window = 800
     width_screen = win.winfo_screenwidth()
