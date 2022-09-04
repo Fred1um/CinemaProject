@@ -1114,13 +1114,34 @@ class TicketFrame(Frame):
         if self.entry_customer_login.index('end') != 0 and self.entry_film_name.index('end') != 0 \
                     and self.entry_sch_time.index('end') != 0 and self.entry_cinema_hall.index('end') != 0\
                 and self.entry_quantity.index('end') != 0 and self.entry_total.index('end') != 0:
-            temp_bill = Bill(self.entry_customer_login.get(), self.entry_film_name.get(), self.entry_sch_time.get(),
-                             self.combo_place_level.get(), self.entry_price.get(), self.entry_quantity.get(),
-                             self.entry_total.get())
-            self.db.insert_bill_data(temp_bill.get_login(), temp_bill.get_film_name(), temp_bill.get_time(),
-                                     temp_bill.get_place_level(), temp_bill.get_price(), temp_bill.get_quantity(),
-                                     temp_bill.get_total())
-            self.reset_entries()
+            if self.combo_place_level.get() == 'economy':
+                self.db.cur.execute(f"SELECT economy FROM cinemas WHERE film_name='{self.entry_film_name.get()}' AND scheduled_time='{self.entry_sch_time.get()}'")
+            elif self.combo_place_level.get() == 'comfort':
+                self.db.cur.execute(f"SELECT comfort FROM cinemas WHERE film_name='{self.entry_film_name.get()}' AND scheduled_time='{self.entry_sch_time.get()}'")
+            elif self.combo_place_level.get() == 'vip':
+                self.db.cur.execute(f"SELECT vip FROM cinemas WHERE film_name='{self.entry_film_name.get()}' AND scheduled_time='{self.entry_sch_time.get()}'")
+            free_places = self.db.cur.fetchone()[0]
+            required_places = int(self.entry_quantity.get())
+            if required_places <= free_places:
+                free_places -= required_places
+                if self.combo_place_level.get() == 'economy':
+                    self.db.cur.execute('''UPDATE cinemas SET economy=? WHERE id=?''',
+                                        (free_places, self.cinemas_tree.set(self.cinemas_tree.selection()[0], '#1')))
+                elif self.combo_place_level.get() == 'comfort':
+                    self.db.cur.execute('''UPDATE cinemas SET comfort=? WHERE id=?''',
+                                        (free_places, self.cinemas_tree.set(self.cinemas_tree.selection()[0], '#1')))
+                elif self.combo_place_level.get() == 'vip':
+                    self.db.cur.execute('''UPDATE cinemas SET vip=? WHERE id=?''',
+                                        (free_places, self.cinemas_tree.set(self.cinemas_tree.selection()[0], '#1')))
+                temp_bill = Bill(self.entry_customer_login.get(), self.entry_film_name.get(), self.entry_sch_time.get(),
+                                 self.combo_place_level.get(), self.entry_price.get(), self.entry_quantity.get(),
+                                 self.entry_total.get())
+                self.db.insert_bill_data(temp_bill.get_login(), temp_bill.get_film_name(), temp_bill.get_time(),
+                                         temp_bill.get_place_level(), temp_bill.get_price(), temp_bill.get_quantity(),
+                                         temp_bill.get_total())
+                self.reset_entries()
+            else:
+                self.lbl_ticket_result.config(text='There is not enough tickets in this category')
         else:
             self.lbl_ticket_result.config(text='Some entries are empty')
 
@@ -1128,13 +1149,34 @@ class TicketFrame(Frame):
         if self.entry_film_name.index('end') != 0 and self.entry_sch_time.index('end') != 0\
                 and self.entry_cinema_hall.index('end') != 0 and self.entry_quantity.index('end') != 0\
                 and self.entry_total.index('end') != 0:
-            temp_bill = Bill('Guest', self.entry_film_name.get(), self.entry_sch_time.get(),
-                             self.combo_place_level.get(), self.entry_price.get(), self.entry_quantity.get(),
-                             self.entry_total.get())
-            self.db.insert_bill_data(temp_bill.get_login(), temp_bill.get_film_name(), temp_bill.get_time(),
-                                     temp_bill.get_place_level(), temp_bill.get_price(), temp_bill.get_quantity(),
-                                     temp_bill.get_total())
-            self.reset_entries()
+            if self.combo_place_level.get() == 'economy':
+                self.db.cur.execute(f"SELECT economy FROM cinemas WHERE film_name='{self.entry_film_name.get()}' AND scheduled_time='{self.entry_sch_time.get()}'")
+            elif self.combo_place_level.get() == 'comfort':
+                self.db.cur.execute(f"SELECT comfort FROM cinemas WHERE film_name='{self.entry_film_name.get()}' AND scheduled_time='{self.entry_sch_time.get()}'")
+            elif self.combo_place_level.get() == 'vip':
+                self.db.cur.execute(f"SELECT vip FROM cinemas WHERE film_name='{self.entry_film_name.get()}' AND scheduled_time='{self.entry_sch_time.get()}'")
+            free_places = self.db.cur.fetchone()[0]
+            required_places = int(self.entry_quantity.get())
+            if required_places <= free_places:
+                free_places -= required_places
+                if self.combo_place_level.get() == 'economy':
+                    self.db.cur.execute('''UPDATE cinemas SET economy=? WHERE id=?''',
+                                        (free_places, self.cinemas_tree.set(self.cinemas_tree.selection()[0], '#1')))
+                elif self.combo_place_level.get() == 'comfort':
+                    self.db.cur.execute('''UPDATE cinemas SET comfort=? WHERE id=?''',
+                                        (free_places, self.cinemas_tree.set(self.cinemas_tree.selection()[0], '#1')))
+                elif self.combo_place_level.get() == 'vip':
+                    self.db.cur.execute('''UPDATE cinemas SET vip=? WHERE id=?''',
+                                        (free_places, self.cinemas_tree.set(self.cinemas_tree.selection()[0], '#1')))
+                temp_bill = Bill('Guest', self.entry_film_name.get(), self.entry_sch_time.get(),
+                                 self.combo_place_level.get(), self.entry_price.get(), self.entry_quantity.get(),
+                                 self.entry_total.get())
+                self.db.insert_bill_data(temp_bill.get_login(), temp_bill.get_film_name(), temp_bill.get_time(),
+                                         temp_bill.get_place_level(), temp_bill.get_price(), temp_bill.get_quantity(),
+                                         temp_bill.get_total())
+                self.reset_entries()
+            else:
+                self.lbl_ticket_result.config(text='There is not enough tickets')
         else:
             self.lbl_ticket_result.config(text='Some entries are empty')
 
@@ -1265,7 +1307,10 @@ class DB:
             id integer primary key,
             film_name text, 
             scheduled_time text, 
-            cinema_hall text)''')
+            cinema_hall text,
+            economy text,
+            comfort text,
+            vip text)''')
         self.cur.execute(
             '''CREATE TABLE IF NOT EXISTS bills(
             id integer primary key,
@@ -1284,8 +1329,13 @@ class DB:
         self.con.commit()
 
     def insert_cinema_data(self, film_name, scheduled_time, cinema_hall):
-        self.cur.execute('''INSERT INTO cinemas (film_name, scheduled_time, cinema_hall) VALUES (?, ?, ?)''',
-                         (film_name, scheduled_time, cinema_hall))
+        self.cur.execute(f"SELECT economy, comfort, vip FROM halls WHERE hall_name='{cinema_hall}'")
+        row = self.cur.fetchall()[0]
+        economy = row[0]
+        comfort = row[1]
+        vip = row[2]
+        self.cur.execute('''INSERT INTO cinemas (film_name, scheduled_time, cinema_hall, economy, comfort, vip) VALUES (?, ?, ?, ?, ?, ?)''',
+                         (film_name, scheduled_time, cinema_hall, economy, comfort, vip))
         self.con.commit()
 
     def insert_worker_data(self, worker_name, worker_surname, worker_login, worker_pass, worker_title):
